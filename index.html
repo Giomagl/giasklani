@@ -729,7 +729,7 @@
 
   <div class="hero-right">
     <div class="hero-photo-frame">
-      <img src="https://res.cloudinary.com/dlpxqqsfa/image/upload/v1782752426/c75126ac-f484-433f-9cec-860dc5dbfd08_ln2itd.jpg" alt="Gia's Clan">
+      <img src="" alt="Gia's Clan" id="heroImg">
     </div>
   </div>
 
@@ -867,6 +867,19 @@
 
   const codexSection = document.getElementById('codex');
   if (codexSection) codexObserver.observe(codexSection);
+
+  // ── Random hero photo on each load ──
+  const heroPhotos = [
+    "https://res.cloudinary.com/dlpxqqsfa/image/upload/v1782752426/c75126ac-f484-433f-9cec-860dc5dbfd08_ln2itd.jpg",
+    "https://res.cloudinary.com/dlpxqqsfa/image/upload/v1782756810/657b7aa5-38d5-47fc-9d76-d90c77bb8cb2_vwpt99.jpg",
+    "https://res.cloudinary.com/dlpxqqsfa/image/upload/v1782756887/WhatsApp_Image_2026-06-29_at_22.13.06_qpx37y.jpg",
+    "https://res.cloudinary.com/dlpxqqsfa/image/upload/v1782756908/WhatsApp_Image_2026-06-29_at_22.13.06_1_cwm9wx.jpg",
+    "https://res.cloudinary.com/dlpxqqsfa/image/upload/v1782756936/WhatsApp_Image_2026-06-29_at_22.13.06_2_rtb2u6.jpg",
+    "https://res.cloudinary.com/dlpxqqsfa/image/upload/v1782756967/WhatsApp_Image_2026-06-29_at_22.13.06_3_vj5daq.jpg"
+  ];
+  const heroImg = document.getElementById('heroImg');
+  const randomUrl = heroPhotos[Math.floor(Math.random() * heroPhotos.length)];
+  heroImg.src = randomUrl + "?v=" + Date.now();
 </script>
 
 </body>
