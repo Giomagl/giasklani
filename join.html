@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>კლანში გაწევრიანება — GIA'S CLAN</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Inter:wght@300;400;600&family=Black+Ops+One&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:  #080808;
+    --dark:   #0f0f0f;
+    --panel:  #141414;
+    --border: #222;
+    --accent: #c8a96e;
+    --white:  #e8e8e8;
+    --dim:    #666;
+    --dimmer: #333;
+    --font-title: 'Bebas Neue', sans-serif;
+    --font-tag:   'Permanent Marker', cursive;
+    --font-body:  'Inter', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 2.5rem;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-tag);
+    font-size: 1.2rem;
+    color: var(--white);
+    letter-spacing: 1px;
+    text-decoration: none;
+  }
+  .nav-back {
+    font-family: var(--font-title);
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--accent); }
+
+  /* ── PAGE WRAPPER ── */
+  .page-wrapper {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 8rem 2rem 5rem;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+  .header-stars {
+    font-size: 1.4rem;
+    color: var(--accent);
+    opacity: 0.7;
+    letter-spacing: 0.5rem;
+    display: block;
+    margin-bottom: 1.2rem;
+  }
+  .header-eyebrow {
+    font-family: var(--font-title);
+    font-size: 0.65rem;
+    letter-spacing: 7px;
+    color: var(--dim);
+    margin-bottom: 0.8rem;
+  }
+  .header-title {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1;
+    color: var(--white);
+  }
+  .header-title span {
+    color: var(--accent);
+    display: block;
+    font-size: 0.6em;
+    margin-top: 0.15em;
+  }
+  .header-divider {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--accent), transparent);
+    margin: 1.5rem auto;
+  }
+  .header-sub {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--dim);
+    line-height: 1.7;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  /* ── FORM ── */
+  .cv-form {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+  }
+
+  /* gold inner border */
+  .cv-form::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(200,169,110,0.08);
+    pointer-events: none;
+  }
+
+  .field-group {
+    margin-bottom: 1.6rem;
+  }
+
+  label {
+    display: block;
+    font-family: var(--font-title);
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    color: var(--dim);
+    margin-bottom: 0.5rem;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    background: var(--black);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 300;
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  select:focus,
+  textarea:focus {
+    border-color: rgba(200,169,110,0.45);
+  }
+  input::placeholder,
+  textarea::placeholder { color: var(--dimmer); }
+
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+  select option { background: var(--dark); }
+
+  textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+
+  /* two-column row */
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  /* radio/checkbox group */
+  .check-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--dim);
+    transition: color 0.15s;
+  }
+  .check-item:hover { color: var(--white); }
+  .check-item input[type="checkbox"],
+  .check-item input[type="radio"] {
+    width: 14px; height: 14px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* form divider */
+  .form-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  .form-section-title {
+    font-family: var(--font-title);
+    font-size: 0.6rem;
+    letter-spacing: 5px;
+    color: var(--dimmer);
+    margin-bottom: 1.4rem;
+  }
+
+  /* ── SUBMIT ── */
+  .btn-submit {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--font-title);
+    font-size: 0.85rem;
+    letter-spacing: 5px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 0.5rem;
+    position: relative;
+  }
+  .btn-submit:hover:not(:disabled) {
+    background: var(--accent);
+    color: var(--black);
+  }
+  .btn-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ── STATUS MESSAGES ── */
+  .status-msg {
+    display: none;
+    margin-top: 1.2rem;
+    padding: 0.9rem 1.2rem;
+    font-family: var(--font-title);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-align: center;
+  }
+  .status-msg.success {
+    display: block;
+    border: 1px solid rgba(200,169,110,0.4);
+    color: var(--accent);
+    background: rgba(200,169,110,0.04);
+  }
+  .status-msg.error {
+    display: block;
+    border: 1px solid rgba(200,80,80,0.4);
+    color: #e07070;
+    background: rgba(200,80,80,0.04);
+  }
+  .status-msg.loading {
+    display: block;
+    border: 1px solid var(--border);
+    color: var(--dim);
+  }
+
+  /* ── SUCCESS SCREEN ── */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+  .success-screen.visible { display: block; }
+  .success-star {
+    font-size: 3rem;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+  .success-title {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 0.8rem;
+  }
+  .success-text {
+    font-size: 0.85rem;
+    color: var(--dim);
+    line-height: 1.7;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #050505;
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    margin-top: 5rem;
+  }
+  .footer-stars { display: block; font-size: 1rem; color: var(--accent); opacity: 0.4; letter-spacing: 0.8rem; margin-bottom: 0.8rem; }
+  .footer-name { font-family: var(--font-tag); font-size: 1.4rem; color: var(--white); }
+  .footer-geo { font-family: var(--font-body); font-size: 0.7rem; color: var(--dimmer); margin-top: 1rem; letter-spacing: 1px; }
+
+  @media (max-width: 600px) {
+    .page-wrapper { padding: 7rem 1.2rem 4rem; }
+    .cv-form { padding: 1.8rem 1.2rem; }
+    .field-row { grid-template-columns: 1fr; }
+    nav { padding: 1rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Gia's Clan</a>
+  <a href="index.html" class="nav-back">← მთავარი</a>
+</nav>
+
+<!-- MAIN -->
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <span class="header-stars">✦ ✦ ✦</span>
+    <p class="header-eyebrow">გაწევრიანება</p>
+    <h1 class="header-title">
+      კლანში
+      <span>ᲨᲔᲛᲝᲒᲕᲘᲔᲠᲗᲓᲘ</span>
+    </h1>
+    <div class="header-divider"></div>
+    <p class="header-sub">
+      კლანი ყველასთვის არ არის. თუ გრძნობ რომ ეს შენი სამყაროა — 
+      შეავსე ფორმა. ვინც უნდა — შეიტყობს.
+    </p>
+  </div>
+
+  <!-- SUCCESS SCREEN (hidden by default) -->
+  <div class="success-screen" id="successScreen">
+    <span class="success-star">✦</span>
+    <div class="success-title">გამოგზავნილია</div>
+    <p class="success-text">
+      შენი CV მიღებულია.<br>
+      თუ ადგილი გექნება კლანში — დაგიკავშირდებიან.
+    </p>
+  </div>
+
+  <!-- FORM -->
+  <div class="cv-form" id="cvForm">
+
+    <!-- PERSONAL -->
+    <p class="form-section-title">// პირადი ინფო</p>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label for="name">სახელი</label>
+        <input type="text" id="name" placeholder="შენი სახელი" required>
+      </div>
+      <div class="field-group">
+        <label for="age">ასაკი</label>
+        <input type="number" id="age" placeholder="18" min="14" max="60">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label for="location">სად ხარ</label>
+      <input type="text" id="location" placeholder="ქალაქი / უბანი">
+    </div>
+
+    <div class="field-group">
+      <label for="contact">კავშირი (ნომერი / ტელეგრამი)</label>
+      <input type="text" id="contact" placeholder="+995 5__ __ __ __">
+    </div>
+
+    <hr class="form-divider">
+
+    <!-- ABOUT -->
+    <p class="form-section-title">// შენ შესახებ</p>
+
+    <div class="field-group">
+      <label for="howKnow">საიდან გაიგე კლანზე</label>
+      <select id="howKnow">
+        <option value="" disabled selected>აირჩიე...</option>
+        <option value="friend">მეგობრისგან</option>
+        <option value="social">სოციალური მედია</option>
+        <option value="street">ქუჩაში</option>
+        <option value="other">სხვა</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label>რა შემგიძლია შემოვიტანო კლანში</label>
+      <div class="check-group">
+        <label class="check-item">
+          <input type="checkbox" name="skills" value="loyalty"> სიერთგულე / ნდობა
+        </label>
+        <label class="check-item">
+          <input type="checkbox" name="skills" value="strength"> ფიზიკური ძალა
+        </label>
+        <label class="check-item">
+          <input type="checkbox" name="skills" value="connections"> კავშირები / ურთიერთობები
+        </label>
+        <label class="check-item">
+          <input type="checkbox" name="skills" value="street_smarts"> ქუჩის ცოდნა
+        </label>
+        <label class="check-item">
+          <input type="checkbox" name="skills" value="other"> სხვა
+        </label>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label for="about">მოგვიყევი შენ შესახებ</label>
+      <textarea id="about" placeholder="ვინ ხარ, რა გაქვს კლანში მოსატანი, რატომ გინდა შემოგვიერთდე..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>გყავს ვინმე კლანში ვინც გიცნობს?</label>
+      <div class="check-group">
+        <label class="check-item">
+          <input type="radio" name="voucher" value="yes"> დიახ
+        </label>
+        <label class="check-item">
+          <input type="radio" name="voucher" value="no"> არა
+        </label>
+      </div>
+    </div>
+
+    <div class="field-group" id="voucherNameGroup" style="display:none;">
+      <label for="voucherName">ვინ გიცნობს კლანიდან</label>
+      <input type="text" id="voucherName" placeholder="სახელი">
+    </div>
+
+    <button class="btn-submit" id="submitBtn" onclick="submitCV()">
+      ✦ &nbsp; CV გაგზავნა &nbsp; ✦
+    </button>
+
+    <div class="status-msg" id="statusMsg"></div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-stars">✦ ✦ ✦</span>
+  <div class="footer-name">Gia's Clan</div>
+  <div class="footer-geo">ვინც იცის — იცის &nbsp;·&nbsp; ყოველთვის ერთად</div>
+</footer>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdp-eW4fnlTUBG7J36pIFz2iTpV_dyRMs",
+    authDomain: "giasklani.firebaseapp.com",
+    projectId: "giasklani",
+    storageBucket: "giasklani.firebasestorage.app",
+    messagingSenderId: "664819824670",
+    appId: "1:664819824670:web:be0b1b0dd645c3d936960f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // voucher radio toggle
+  document.querySelectorAll('input[name="voucher"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.getElementById('voucherNameGroup').style.display =
+        radio.value === 'yes' ? 'block' : 'none';
+    });
+  });
+
+  window.submitCV = async function() {
+    const name    = document.getElementById('name').value.trim();
+    const age     = document.getElementById('age').value.trim();
+    const location= document.getElementById('location').value.trim();
+    const contact = document.getElementById('contact').value.trim();
+    const howKnow = document.getElementById('howKnow').value;
+    const about   = document.getElementById('about').value.trim();
+    const voucher = document.querySelector('input[name="voucher"]:checked')?.value || '';
+    const voucherName = document.getElementById('voucherName').value.trim();
+
+    const skills = [...document.querySelectorAll('input[name="skills"]:checked')]
+                    .map(cb => cb.value);
+
+    const statusEl = document.getElementById('statusMsg');
+    const btn = document.getElementById('submitBtn');
+
+    // basic validation
+    if (!name || !contact) {
+      statusEl.className = 'status-msg error';
+      statusEl.textContent = '✗  სახელი და კავშირი სავალდებულოა';
+      return;
+    }
+
+    btn.disabled = true;
+    statusEl.className = 'status-msg loading';
+    statusEl.textContent = '... იგზავნება';
+
+    try {
+      await addDoc(collection(db, 'applications'), {
+        name,
+        age: age ? Number(age) : null,
+        location,
+        contact,
+        howKnow,
+        skills,
+        about,
+        voucher,
+        voucherName: voucher === 'yes' ? voucherName : '',
+        submittedAt: serverTimestamp()
+      });
+
+      // show success screen
+      document.getElementById('cvForm').style.display = 'none';
+      document.getElementById('successScreen').classList.add('visible');
+
+    } catch (err) {
+      console.error(err);
+      statusEl.className = 'status-msg error';
+      statusEl.textContent = '✗  შეცდომა, სცადე ხელახლა';
+      btn.disabled = false;
+    }
+  };
+</script>
+
+</body>
+</html>
