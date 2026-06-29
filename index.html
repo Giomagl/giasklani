@@ -13,7 +13,7 @@
     --dark:   #0f0f0f;
     --panel:  #141414;
     --border: #222;
-    --accent: #c8a96e;   /* single warm gold — like a prison star */
+    --accent: #c8a96e;
     --white:  #e8e8e8;
     --dim:    #666;
     --dimmer: #333;
@@ -32,7 +32,7 @@
     overflow-x: hidden;
   }
 
-  /* grain */
+  /* grain overlay */
   body::after {
     content: '';
     position: fixed;
@@ -41,6 +41,136 @@
     pointer-events: none;
     z-index: 999;
   }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50%       { opacity: 1;   transform: scale(1.04); }
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(6px); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+  }
+  @keyframes borderGlow {
+    0%, 100% { border-color: rgba(200,169,110,0.15); }
+    50%       { border-color: rgba(200,169,110,0.4); }
+  }
+  @keyframes starSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes slideInRule {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Scroll-triggered reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* stagger children */
+  .stagger > * { opacity: 0; transform: translateY(22px); transition: opacity 0.55s ease, transform 0.55s ease; }
+  .stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay: 0s; }
+  .stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay: 0.12s; }
+  .stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay: 0.24s; }
+  .stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay: 0.36s; }
+
+  /* ── HAMBURGER ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile nav overlay */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(8,8,8,0.97);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .mobile-nav.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .mobile-nav a {
+    font-family: var(--font-title);
+    font-size: 2rem;
+    letter-spacing: 6px;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .mobile-nav a:hover { color: var(--accent); }
 
   /* ── NAV ── */
   nav {
@@ -54,6 +184,12 @@
     background: rgba(8,8,8,0.92);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
+    transition: padding 0.3s;
+    animation: fadeIn 0.6s ease both;
+  }
+  nav.scrolled {
+    padding: 0.7rem 2.5rem;
+    background: rgba(8,8,8,0.98);
   }
   .nav-logo {
     font-family: var(--font-tag);
@@ -69,8 +205,19 @@
     color: var(--dim);
     text-decoration: none;
     transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0; right: 0;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.25s;
   }
   .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { transform: scaleX(1); }
 
   /* ── HERO ── */
   #hero {
@@ -82,7 +229,6 @@
     background: var(--black);
   }
 
-  /* faint concrete crack lines */
   #hero::before {
     content: '';
     position: absolute;
@@ -95,7 +241,6 @@
     z-index: 0;
   }
 
-  /* LEFT side — text content */
   .hero-left {
     flex: 0 0 50%;
     display: flex;
@@ -109,7 +254,6 @@
       transparent;
   }
 
-  /* RIGHT side — photo area */
   .hero-right {
     flex: 0 0 50%;
     position: relative;
@@ -118,6 +262,7 @@
     align-items: center;
     justify-content: center;
     padding: 7rem 4rem 4rem 2rem;
+    animation: fadeInRight 1s 0.4s ease both;
   }
 
   .hero-photo-frame {
@@ -133,9 +278,9 @@
     justify-content: center;
     flex-direction: column;
     gap: 0.8rem;
+    animation: borderGlow 4s 1s ease-in-out infinite;
   }
 
-  /* subtle inner vignette */
   .hero-photo-frame::after {
     content: '';
     position: absolute;
@@ -144,8 +289,6 @@
     pointer-events: none;
     z-index: 2;
   }
-
-  /* gold corner accents */
   .hero-photo-frame::before {
     content: '';
     position: absolute;
@@ -153,27 +296,9 @@
     border: 1px solid rgba(200,169,110,0.15);
     pointer-events: none;
     z-index: 3;
+    transition: border-color 0.5s;
   }
 
-  .hero-photo-placeholder-icon {
-    font-size: 3rem;
-    opacity: 0.1;
-    z-index: 1;
-  }
-  .hero-photo-placeholder-text {
-    font-family: var(--font-title);
-    font-size: 0.65rem;
-    letter-spacing: 5px;
-    color: var(--dimmer);
-    z-index: 1;
-  }
-  .hero-photo-placeholder-sub {
-    font-family: var(--font-body);
-    font-size: 0.7rem;
-    color: #2a2a2a;
-    z-index: 1;
-    letter-spacing: 1px;
-  }
   .hero-photo-frame img {
     position: absolute;
     inset: 0;
@@ -181,9 +306,10 @@
     height: 100%;
     object-fit: cover;
     z-index: 1;
+    transition: transform 0.6s ease;
   }
+  .hero-photo-frame:hover img { transform: scale(1.03); }
 
-  /* vertical gold divider between halves */
   .hero-divider-line {
     position: absolute;
     left: 50%;
@@ -194,13 +320,13 @@
     z-index: 2;
   }
 
-  /* eight-pointed star — ვორ ვ ზაკონე symbol */
   .hero-star {
     font-size: 1.8rem;
     color: var(--accent);
     opacity: 0.7;
     margin-bottom: 1.5rem;
     letter-spacing: 0.4rem;
+    animation: pulse 3s ease-in-out infinite;
   }
 
   .hero-eyebrow {
@@ -213,7 +339,7 @@
 
   .hero-title {
     font-family: 'Black Ops One', sans-serif;
-    font-size: clamp(4rem, 8vw, 8rem);
+    font-size: clamp(3.5rem, 8vw, 8rem);
     line-height: 0.9;
     color: var(--white);
     text-shadow:
@@ -222,14 +348,21 @@
     position: relative;
     z-index: 1;
     letter-spacing: -1px;
+    animation: fadeInLeft 0.9s 0.2s ease both;
   }
 
   .hero-title .clan-word {
     display: block;
     color: var(--accent);
-    font-size: clamp(3rem, 6vw, 6rem);
+    font-size: clamp(2.5rem, 6vw, 6rem);
     opacity: 0.9;
     margin-top: 0.1em;
+    background: linear-gradient(90deg, #c8a96e, #e8c98e, #c8a96e, #a07840);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite;
   }
 
   .hero-subtitle {
@@ -238,9 +371,9 @@
     letter-spacing: 8px;
     color: var(--dim);
     margin-top: 1.2rem;
+    animation: fadeInLeft 0.9s 0.4s ease both;
   }
 
-  /* ქართული სიტყვა */
   .hero-georgian {
     margin-top: 2rem;
     font-family: var(--font-body);
@@ -249,6 +382,7 @@
     color: var(--accent);
     letter-spacing: 2px;
     opacity: 0.7;
+    animation: fadeInLeft 0.9s 0.6s ease both;
   }
 
   .motto-placeholder {
@@ -274,30 +408,6 @@
     color: var(--dimmer);
     animation: bounce 2.5s infinite;
   }
-  @keyframes bounce {
-    0%,100% { transform: translateX(-50%) translateY(0); }
-    50%      { transform: translateX(-50%) translateY(5px); }
-  }
-
-  @media (max-width: 900px) {
-    #hero {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .hero-left {
-      flex: none;
-      padding: 7rem 2.5rem 3rem;
-      text-align: center;
-    }
-    .hero-right {
-      flex: none;
-      padding: 1rem 2rem 4rem;
-      min-height: 50vw;
-    }
-    .hero-photo-frame { min-height: 280px; }
-    .hero-divider-line { display: none; }
-    .scroll-hint { left: 50%; }
-  }
 
   /* ── SHARED SECTION ── */
   section { padding: 6rem 2rem; }
@@ -312,7 +422,7 @@
 
   .section-heading {
     font-family: var(--font-tag);
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2rem, 5vw, 4rem);
     color: var(--white);
     line-height: 1;
     margin-bottom: 1.5rem;
@@ -323,9 +433,11 @@
     background: var(--accent);
     opacity: 0.5;
     margin-bottom: 2.5rem;
+    transition: width 0.6s ease;
   }
+  .divider.visible { width: 80px; }
 
-  /* ── CODEX / ქურდული კოდექსი ── */
+  /* ── CODEX ── */
   #codex {
     background: var(--dark);
     border-top: 1px solid var(--border);
@@ -355,14 +467,38 @@
     border: 1px solid var(--border);
     padding: 2rem 1.5rem;
     text-align: left;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.3s;
   }
+  .codex-rule.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .codex-rule::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(200,169,110,0.05) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .codex-rule:hover { border-color: rgba(200,169,110,0.3); transform: translateY(-3px); }
+  .codex-rule:hover::before { opacity: 1; }
+
   .rule-num {
     font-family: var(--font-title);
     font-size: 2.5rem;
     color: var(--dimmer);
     line-height: 1;
     margin-bottom: 0.5rem;
+    transition: color 0.3s;
   }
+  .codex-rule:hover .rule-num { color: var(--accent); }
+
   .rule-geo {
     font-family: var(--font-body);
     font-size: 0.95rem;
@@ -377,9 +513,7 @@
   }
 
   /* ── ABOUT ── */
-  #about {
-    background: var(--black);
-  }
+  #about { background: var(--black); }
   .about-inner {
     max-width: 960px;
     margin: 0 auto;
@@ -395,7 +529,6 @@
     margin-bottom: 1rem;
   }
 
-  /* wall — concrete texture */
   .wall-art {
     position: relative;
     height: 340px;
@@ -405,8 +538,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: border-color 0.4s;
   }
-  /* rough brick/concrete lines */
+  .wall-art:hover { border-color: rgba(200,169,110,0.3); }
   .wall-art::before {
     content: '';
     position: absolute;
@@ -415,90 +549,53 @@
       repeating-linear-gradient(0deg,   transparent, transparent 47px, #1a1a1a 47px, #1a1a1a 48px),
       repeating-linear-gradient(90deg, transparent, transparent 95px, #161616 95px, #161616 96px);
   }
-  .wall-tag {
-    font-family: var(--font-tag);
-    font-size: 5rem;
-    color: rgba(232,232,232,0.12);
-    z-index: 1;
-    transform: rotate(-4deg);
-    user-select: none;
-    white-space: nowrap;
-  }
-  .wall-star-big {
-    position: absolute;
-    font-size: 5rem;
-    color: var(--accent);
-    opacity: 0.12;
-    z-index: 1;
-    top: 1rem; right: 1.5rem;
-  }
-  .wall-tag-small {
-    position: absolute;
-    font-family: var(--font-tag);
-    font-size: 0.85rem;
-    color: rgba(200,169,110,0.3);
-    z-index: 1;
-  }
-  .wall-tag-small:nth-child(3) { bottom: 1.2rem; left: 1.2rem; transform: rotate(2deg); }
-  .wall-tag-small:nth-child(4) { top: 1.2rem; left: 1.5rem; transform: rotate(-6deg); font-size: 0.75rem; }
-
-  /* ── GALLERY ── */
-  #gallery { background: var(--dark); }
-  .gallery-inner { max-width: 1100px; margin: 0 auto; }
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3px;
-  }
-  .photo-slot {
-    aspect-ratio: 1;
-    background: var(--panel);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  .photo-slot:hover .slot-overlay { opacity: 1; }
-  .photo-slot.featured { grid-column: span 2; aspect-ratio: 2/1; }
-
-  .slot-placeholder {
-    width: 100%; height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    border: 1px dashed #1e1e1e;
-  }
-  .slot-icon { font-size: 1.5rem; opacity: 0.15; }
-  .slot-label {
-    font-family: var(--font-title);
-    font-size: 0.6rem;
-    letter-spacing: 3px;
-    color: var(--dimmer);
-  }
-  .slot-overlay {
+  .wall-art img {
     position: absolute;
     inset: 0;
-    background: rgba(200,169,110,0.06);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s;
-    font-family: var(--font-tag);
-    font-size: 0.9rem;
-    color: var(--accent);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: transform 0.6s ease;
   }
-  .photo-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .wall-art:hover img { transform: scale(1.04); }
 
-  .gallery-note {
+  /* ── JOIN CTA ── */
+  #join-cta {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 5rem 1.5rem;
     text-align: center;
-    margin-top: 2rem;
-    font-family: var(--font-title);
-    font-size: 0.6rem;
-    letter-spacing: 3px;
-    color: var(--dimmer);
   }
+  .join-inner { max-width: 620px; margin: 0 auto; }
+
+  .cta-btn {
+    display: inline-block;
+    font-family: var(--font-title);
+    font-size: 0.85rem;
+    letter-spacing: 5px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 1rem 3rem;
+    text-decoration: none;
+    transition: background 0.25s, color 0.25s, transform 0.2s, box-shadow 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+    z-index: 0;
+  }
+  .cta-btn:hover::before { transform: scaleX(1); }
+  .cta-btn:hover { color: #080808; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,169,110,0.2); }
+  .cta-btn span { position: relative; z-index: 1; }
 
   /* ── FOOTER ── */
   footer {
@@ -535,33 +632,91 @@
     letter-spacing: 1px;
   }
 
-  /* ── RESPONSIVE ── */
+  /* ── RESPONSIVE — TABLET ── */
+  @media (max-width: 900px) {
+    #hero {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .hero-left {
+      flex: none;
+      padding: 6rem 2rem 2.5rem;
+      text-align: center;
+    }
+    .hero-star { margin-bottom: 1rem; }
+    .hero-right {
+      flex: none;
+      padding: 0 1.5rem 3rem;
+      min-height: 50vw;
+    }
+    .hero-photo-frame { min-height: 260px; }
+    .hero-divider-line { display: none; }
+    .scroll-hint { left: 50%; }
+    nav { padding: 1rem 1.5rem; }
+    nav.scrolled { padding: 0.6rem 1.5rem; }
+  }
+
+  /* ── RESPONSIVE — MOBILE ── */
   @media (max-width: 700px) {
-    .about-inner { grid-template-columns: 1fr; gap: 2rem; }
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    .photo-slot.featured { grid-column: span 2; }
     .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .mobile-nav { display: flex; }
+
+    #hero { min-height: 100svh; }
+    .hero-left { padding: 5.5rem 1.5rem 2rem; }
+    .hero-right { padding: 0 1.2rem 2.5rem; }
+    .hero-photo-frame { min-height: 56vw; }
+
+    section { padding: 4rem 1.2rem; }
+
+    .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .wall-art { height: 240px; }
+
     .codex-rules { grid-template-columns: 1fr 1fr; }
+    .codex-rule { padding: 1.4rem 1rem; }
+    .rule-num { font-size: 1.8rem; }
+    .rule-en { font-size: 0.8rem; letter-spacing: 2px; }
+
+    #join-cta { padding: 3.5rem 1.2rem; }
+    .cta-btn { padding: 0.85rem 2rem; font-size: 0.78rem; letter-spacing: 3px; }
+
+    .section-heading { font-size: clamp(1.8rem, 8vw, 3rem); }
+    footer { padding: 2.5rem 1.2rem; }
+  }
+
+  /* Extra small */
+  @media (max-width: 380px) {
+    .codex-rules { grid-template-columns: 1fr; }
+    .hero-left { padding: 5rem 1.2rem 1.5rem; }
   }
 </style>
 </head>
 <body>
 
+<!-- MOBILE NAV OVERLAY -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#codex" onclick="closeMobileNav()">კოდექსი</a>
+  <a href="#about" onclick="closeMobileNav()">ვინ ვართ</a>
+  <a href="join.html" onclick="closeMobileNav()">გაწევრიანება</a>
+</div>
+
 <!-- NAV -->
-<nav>
+<nav id="mainNav">
   <span class="nav-logo">Gia's Clan</span>
   <div class="nav-links">
     <a href="#codex">კოდექსი</a>
     <a href="#about">ვინ ვართ</a>
     <a href="join.html">გაწევრიანება</a>
   </div>
+  <button class="hamburger" id="hamburger" aria-label="menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
   <div class="hero-divider-line"></div>
 
-  <!-- LEFT: Title & text -->
   <div class="hero-left">
     <div class="hero-star">✦ ✦ ✦</div>
     <h1 class="hero-title">
@@ -572,7 +727,6 @@
     <p class="hero-georgian">ერთი სამყარო · ერთი სისხლი · ერთი კლანი</p>
   </div>
 
-  <!-- RIGHT: Clan photo -->
   <div class="hero-right">
     <div class="hero-photo-frame">
       <img src="https://res.cloudinary.com/dlpxqqsfa/image/upload/v1782752426/c75126ac-f484-433f-9cec-860dc5dbfd08_ln2itd.jpg" alt="Gia's Clan">
@@ -583,8 +737,8 @@
 </section>
 
 <!-- JOIN CTA -->
-<section id="join-cta" style="background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 5rem 2rem; text-align: center;">
-  <div style="max-width: 620px; margin: 0 auto;">
+<section id="join-cta">
+  <div class="join-inner reveal">
     <p class="section-label">გაწევრიანება</p>
     <h2 class="section-heading" style="font-family: 'Black Ops One', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 0.8rem;">შემოგვიერთდი</h2>
     <div class="divider" style="margin: 0 auto 2rem;"></div>
@@ -592,20 +746,8 @@
       კლანი ყველასთვის არ არის.<br>
       თუ გრძნობ რომ ეს შენი სამყაროა — გამოგვიგზავნე CV.
     </p>
-    <a href="join.html" style="
-      display: inline-block;
-      font-family: var(--font-title);
-      font-size: 0.85rem;
-      letter-spacing: 5px;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      padding: 1rem 3rem;
-      text-decoration: none;
-      transition: background 0.2s, color 0.2s;
-      position: relative;
-    " onmouseover="this.style.background='#c8a96e'; this.style.color='#080808';"
-       onmouseout="this.style.background='transparent'; this.style.color='#c8a96e';">
-      ✦ &nbsp; CV გაგზავნა &nbsp; ✦
+    <a href="join.html" class="cta-btn">
+      <span>✦ &nbsp; CV გაგზავნა &nbsp; ✦</span>
     </a>
   </div>
 </section>
@@ -613,10 +755,10 @@
 <!-- CODEX -->
 <section id="codex">
   <div class="codex-inner">
-    <p class="section-label">THE CODE</p>
-    <h2 class="section-heading">კლანის კოდექსი</h2>
-    <div class="divider" style="margin: 0 auto 1rem;"></div>
-    <span class="codex-stars">✦ ✦ ✦ ✦ ✦</span>
+    <p class="section-label reveal">THE CODE</p>
+    <h2 class="section-heading reveal">კლანის კოდექსი</h2>
+    <div class="divider reveal" style="margin: 0 auto 1rem;"></div>
+    <span class="codex-stars reveal">✦ ✦ ✦ ✦ ✦</span>
 
     <div class="codex-rules">
       <div class="codex-rule">
@@ -642,7 +784,7 @@
 <!-- ABOUT -->
 <section id="about">
   <div class="about-inner">
-    <div class="about-text">
+    <div class="about-text reveal-left">
       <p class="section-label">ვინ ვართ</p>
       <h2 class="section-heading">The Clan</h2>
       <div class="divider"></div>
@@ -657,18 +799,75 @@
         If you know, you know. If you don't — this page isn't for you.
       </p>
     </div>
-    <div class="wall-art">
-      <img src="https://res.cloudinary.com/dlpxqqsfa/image/upload/v1782753147/3a63bc93-bd38-4427-b52f-120c6b6a9df2_lx9hey.jpg" alt="Clan" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
+    <div class="wall-art reveal-right">
+      <img src="https://res.cloudinary.com/dlpxqqsfa/image/upload/v1782753147/3a63bc93-bd38-4427-b52f-120c6b6a9df2_lx9hey.jpg" alt="Clan">
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer class="reveal">
   <span class="footer-stars">✦ ✦ ✦</span>
   <div class="footer-name">Gia's Clan</div>
   <div class="footer-geo">ვინც იცის — იცის &nbsp;·&nbsp; ყოველთვის ერთად</div>
 </footer>
+
+<script>
+  // ── Hamburger menu ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+  });
+
+  function closeMobileNav() {
+    hamburger.classList.remove('open');
+    mobileNav.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── Nav shrink on scroll ──
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // ── Scroll reveal ──
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const codexRules = document.querySelectorAll('.codex-rule');
+  const dividers = document.querySelectorAll('.divider');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  revealEls.forEach(el => observer.observe(el));
+  dividers.forEach(el => observer.observe(el));
+
+  // Codex rules stagger
+  const codexObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const rules = document.querySelectorAll('.codex-rule');
+        rules.forEach((rule, i) => {
+          setTimeout(() => rule.classList.add('visible'), i * 120);
+        });
+        codexObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const codexSection = document.getElementById('codex');
+  if (codexSection) codexObserver.observe(codexSection);
+</script>
 
 </body>
 </html>
