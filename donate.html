@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>დონაცია — GIA'S CLAN</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Inter:wght@300;400;600&family=Black+Ops+One&family=Russo+One&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:  #080808;
+    --dark:   #0f0f0f;
+    --panel:  #141414;
+    --border: #222;
+    --accent: #c8a96e;
+    --white:  #e8e8e8;
+    --dim:    #666;
+    --dimmer: #333;
+    --font-title: 'Bebas Neue', sans-serif;
+    --font-tag:   'Permanent Marker', cursive;
+    --font-body:  'Inter', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50%       { opacity: 1;   transform: scale(1.04); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+  }
+  @keyframes borderGlow {
+    0%, 100% { border-color: rgba(200,169,110,0.15); }
+    50%       { border-color: rgba(200,169,110,0.4); }
+  }
+
+  /* ── HAMBURGER ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(8,8,8,0.97);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .mobile-nav.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .mobile-nav a {
+    font-family: var(--font-title);
+    font-size: 2rem;
+    letter-spacing: 6px;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .mobile-nav a:hover { color: var(--accent); }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 2.5rem;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    transition: padding 0.3s;
+    animation: fadeIn 0.6s ease both;
+  }
+  nav.scrolled {
+    padding: 0.7rem 2.5rem;
+    background: rgba(8,8,8,0.98);
+  }
+  .nav-logo {
+    font-family: var(--font-tag);
+    font-size: 1.2rem;
+    color: var(--white);
+    letter-spacing: 1px;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    font-family: var(--font-title);
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0; right: 0;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.25s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-links a.active { color: var(--accent); }
+  .nav-links a.active::after { transform: scaleX(1); }
+
+  /* ── DONATE PAGE ── */
+  main {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 1.5rem 4rem;
+    position: relative;
+  }
+
+  main::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 30%, rgba(200,169,110,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .donate-card {
+    max-width: 620px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 0.8s ease both;
+  }
+
+  .donate-stars {
+    font-size: 1.6rem;
+    color: var(--accent);
+    opacity: 0.7;
+    letter-spacing: 0.6rem;
+    margin-bottom: 1.5rem;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  .section-label {
+    font-family: var(--font-title);
+    font-size: 0.65rem;
+    letter-spacing: 6px;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .donate-title {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 1.2rem;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.9);
+  }
+
+  .donate-title .accent-word {
+    background: linear-gradient(90deg, #c8a96e, #e8c98e, #c8a96e, #a07840);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite;
+  }
+
+  .divider {
+    width: 60px; height: 1px;
+    background: var(--accent);
+    opacity: 0.5;
+    margin: 0 auto 2rem;
+  }
+
+  .donate-text {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: #aaa;
+    margin-bottom: 2.8rem;
+  }
+
+  .donate-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    animation: borderGlow 4s 1s ease-in-out infinite;
+  }
+
+  .donate-panel-label {
+    font-family: var(--font-title);
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    color: var(--dim);
+    margin-bottom: 1rem;
+  }
+
+  .donate-amount-hint {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: #999;
+    line-height: 1.7;
+    margin-bottom: 1.8rem;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    font-family: var(--font-title);
+    font-size: 0.95rem;
+    letter-spacing: 5px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 1.1rem 3.2rem;
+    text-decoration: none;
+    transition: background 0.25s, color 0.25s, transform 0.2s, box-shadow 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+    z-index: 0;
+  }
+  .cta-btn:hover::before { transform: scaleX(1); }
+  .cta-btn:hover { color: #080808; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,169,110,0.25); }
+  .cta-btn span { position: relative; z-index: 1; }
+
+  .donate-note {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--dimmer);
+    letter-spacing: 0.5px;
+    margin-top: 1.6rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 3rem;
+    font-family: var(--font-title);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--accent); }
+
+  footer {
+    background: #050505;
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .footer-stars {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--accent);
+    opacity: 0.4;
+    letter-spacing: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .footer-name {
+    font-family: var(--font-tag);
+    font-size: 1.8rem;
+    color: var(--white);
+  }
+  .footer-geo {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--dimmer);
+    margin-top: 1.5rem;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .mobile-nav { display: flex; }
+    nav { padding: 1rem 1.5rem; }
+    nav.scrolled { padding: 0.6rem 1.5rem; }
+    main { padding: 6.5rem 1.2rem 3rem; }
+    .donate-panel { padding: 2rem 1.4rem; }
+    .cta-btn { padding: 0.95rem 2.4rem; font-size: 0.82rem; letter-spacing: 3px; }
+    footer { padding: 2.5rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html#codex" onclick="closeMobileNav()">კოდექსი</a>
+  <a href="index.html#about" onclick="closeMobileNav()">ვინ ვართ</a>
+  <a href="join.html" onclick="closeMobileNav()">გაწევრიანება</a>
+  <a href="donate.html" onclick="closeMobileNav()">დონაცია</a>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">Gia's Clan</a>
+  <div class="nav-links">
+    <a href="index.html#codex">კოდექსი</a>
+    <a href="index.html#about">ვინ ვართ</a>
+    <a href="join.html">გაწევრიანება</a>
+    <a href="donate.html" class="active">დონაცია</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- DONATE MAIN -->
+<main>
+  <div class="donate-card">
+    <div class="donate-stars">✦ ✦ ✦</div>
+    <p class="section-label">მხარდაჭერა</p>
+    <h1 class="donate-title">დაუჭირე მხარი<br><span class="accent-word">კლანს</span></h1>
+    <div class="divider"></div>
+    <p class="donate-text">
+      Gia's Clan ოჯახია, რომელიც ერთად დგას — ერთი სამყაროს, ერთი სისხლის
+      პრინციპით. შენი დონაცია გვეხმარება გავაგრძელოთ ის, რაც ერთად დავიწყეთ.
+    </p>
+
+    <div class="donate-panel">
+      <p class="donate-panel-label">დონაცია KISA.GE-ის მეშვეობით</p>
+      <p class="donate-amount-hint">
+        დააჭირე ღილაკს და გადახვალ უსაფრთხო გვერდზე, სადაც შეგიძლია
+        აირჩიო თანხა და დაასრულო დონაცია რამდენიმე წუთში.
+      </p>
+      <a href="https://www.kisa.ge/donate/DQO8B64ZfI5QfPhgWeXC" class="cta-btn" target="_blank" rel="noopener noreferrer">
+        <span>✦ &nbsp; დონაციის გაკეთება &nbsp; ✦</span>
+      </a>
+      <p class="donate-note">დაცულია kisa.ge-ის მიერ</p>
+    </div>
+
+    <a href="index.html" class="back-link">← მთავარ გვერდზე დაბრუნება</a>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-stars">✦ ✦ ✦</span>
+  <div class="footer-name">Gia's Clan</div>
+  <div class="footer-geo">ვინც იცის — იცის &nbsp;·&nbsp; ყოველთვის ერთად</div>
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+  });
+
+  function closeMobileNav() {
+    hamburger.classList.remove('open');
+    mobileNav.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+</script>
+
+</body>
+</html>
