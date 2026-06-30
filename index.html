@@ -649,6 +649,18 @@
     margin-top: 1.5rem;
     letter-spacing: 1px;
   }
+  .footer-admin-link {
+    display: inline-block;
+    margin-top: 1.2rem;
+    font-family: var(--font-title);
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    color: var(--dimmer);
+    text-decoration: none;
+    opacity: 0.5;
+    transition: color 0.2s, opacity 0.2s;
+  }
+  .footer-admin-link:hover { color: var(--dim); opacity: 1; }
 
   /* ── RESPONSIVE — TABLET ── */
   @media (max-width: 900px) {
@@ -855,6 +867,7 @@
   <span class="footer-stars">✦ ✦ ✦</span>
   <div class="footer-name">Gia's Clan</div>
   <div class="footer-geo">ვინც იცის — იცის &nbsp;·&nbsp; ყოველთვის ერთად</div>
+  <a href="admin.html" class="footer-admin-link">ადმინი</a>
 </footer>
 
 <script>
