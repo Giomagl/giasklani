@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Admin — GIA'S CLAN</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Inter:wght@300;400;600&family=Black+Ops+One&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:  #080808;
+    --dark:   #0f0f0f;
+    --panel:  #141414;
+    --border: #222;
+    --accent: #c8a96e;
+    --white:  #e8e8e8;
+    --dim:    #666;
+    --dimmer: #333;
+    --font-title: 'Bebas Neue', sans-serif;
+    --font-tag:   'Permanent Marker', cursive;
+    --font-body:  'Inter', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 2.5rem;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-tag);
+    font-size: 1.2rem;
+    color: var(--white);
+    letter-spacing: 1px;
+    text-decoration: none;
+  }
+  .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-back, .nav-logout {
+    font-family: var(--font-title);
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .nav-back:hover, .nav-logout:hover { color: var(--accent); }
+
+  /* ── LOGIN SCREEN ── */
+  #loginScreen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 1.5rem 3rem;
+  }
+  .login-card {
+    width: 100%;
+    max-width: 380px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+  }
+  .login-card::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(200,169,110,0.08);
+    pointer-events: none;
+  }
+  .login-stars {
+    font-size: 1.3rem;
+    color: var(--accent);
+    opacity: 0.7;
+    letter-spacing: 0.5rem;
+    display: block;
+    text-align: center;
+    margin-bottom: 1.2rem;
+  }
+  .login-title {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: 1.6rem;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 0.4rem;
+  }
+  .login-sub {
+    font-family: var(--font-title);
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    color: var(--dim);
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .field-group { margin-bottom: 1.2rem; }
+  label {
+    display: block;
+    font-family: var(--font-title);
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    color: var(--dim);
+    margin-bottom: 0.5rem;
+  }
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+    width: 100%;
+    background: var(--black);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 300;
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input:focus { border-color: rgba(200,169,110,0.45); }
+  input::placeholder { color: var(--dimmer); }
+
+  .btn-submit {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--font-title);
+    font-size: 0.85rem;
+    letter-spacing: 5px;
+    padding: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 0.5rem;
+  }
+  .btn-submit:hover:not(:disabled) { background: var(--accent); color: var(--black); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .status-msg {
+    display: none;
+    margin-top: 1.1rem;
+    padding: 0.8rem 1rem;
+    font-family: var(--font-title);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+  .status-msg.error { display: block; border: 1px solid rgba(200,80,80,0.4); color: #e07070; background: rgba(200,80,80,0.04); }
+  .status-msg.loading { display: block; border: 1px solid var(--border); color: var(--dim); }
+
+  /* ── DASHBOARD ── */
+  #dashboard { display: none; padding: 7rem 2rem 4rem; max-width: 1280px; margin: 0 auto; }
+  #dashboard.visible { display: block; }
+
+  .dash-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .dash-title {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    color: var(--white);
+  }
+  .dash-count {
+    font-family: var(--font-title);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-top: 0.3rem;
+  }
+
+  .dash-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: center;
+  }
+  .search-input {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    padding: 0.65rem 1rem;
+    outline: none;
+    min-width: 220px;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: rgba(200,169,110,0.45); }
+  .search-input::placeholder { color: var(--dimmer); }
+
+  select.filter-select {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    padding: 0.65rem 1rem;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    padding-right: 2.2rem;
+  }
+
+  .empty-state, .loading-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--dim);
+    font-family: var(--font-title);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+  }
+
+  /* table (desktop) */
+  .cv-table-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  table.cv-table { width: 100%; border-collapse: collapse; min-width: 880px; }
+  .cv-table th {
+    text-align: left;
+    font-family: var(--font-title);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .cv-table th:hover { color: var(--accent); }
+  .cv-table th .sort-arrow { opacity: 0.5; margin-left: 3px; font-size: 0.6rem; }
+  .cv-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--white);
+    vertical-align: top;
+  }
+  .cv-table tr:last-child td { border-bottom: none; }
+  .cv-table tr { transition: background 0.15s; }
+  .cv-table tr:hover { background: rgba(200,169,110,0.04); }
+
+  .cell-dim { color: var(--dim); }
+  .cell-name { font-weight: 600; }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 4px; }
+  .badge {
+    font-family: var(--font-title);
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    color: var(--accent);
+    border: 1px solid rgba(200,169,110,0.3);
+    padding: 0.2rem 0.5rem;
+    white-space: nowrap;
+  }
+  .voucher-yes { color: var(--accent); }
+  .voucher-no { color: var(--dimmer); }
+
+  .btn-view {
+    font-family: var(--font-title);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    border: 1px solid var(--border);
+    background: none;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .btn-view:hover { color: var(--accent); border-color: rgba(200,169,110,0.4); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.2rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    max-width: 560px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 2.2rem;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.4rem;
+    background: none;
+    border: none;
+    color: var(--dim);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--accent); }
+  .modal-name {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: 1.6rem;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+  .modal-meta {
+    font-family: var(--font-title);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .modal-field { margin-bottom: 1.2rem; }
+  .modal-field-label {
+    font-family: var(--font-title);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: var(--dim);
+    margin-bottom: 0.35rem;
+  }
+  .modal-field-value {
+    font-size: 0.9rem;
+    color: var(--white);
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+
+  /* mobile cards */
+  .cv-cards { display: none; flex-direction: column; gap: 1px; background: var(--border); }
+  .cv-card {
+    background: var(--panel);
+    padding: 1.2rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .cv-card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+  .cv-card-name { font-weight: 600; font-size: 1rem; }
+  .cv-card-date { font-family: var(--font-title); font-size: 0.65rem; letter-spacing: 1px; color: var(--dim); white-space: nowrap; }
+  .cv-card-meta { font-size: 0.8rem; color: var(--dim); }
+
+  @media (max-width: 880px) {
+    .cv-table-wrap { display: none; }
+    .cv-cards { display: flex; }
+  }
+  @media (max-width: 600px) {
+    #dashboard { padding: 6.5rem 1.2rem 3rem; }
+    nav { padding: 1rem 1.2rem; }
+    .dash-controls { width: 100%; }
+    .search-input { flex: 1; min-width: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Gia's Clan</a>
+  <div class="nav-right">
+    <button class="nav-logout" id="logoutBtn" style="display:none;">გასვლა</button>
+    <a href="index.html" class="nav-back">← მთავარი</a>
+  </div>
+</nav>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <span class="login-stars">✦ ✦ ✦</span>
+    <h1 class="login-title">CV Admin</h1>
+    <p class="login-sub">წვდომა შეზღუდულია</p>
+
+    <div class="field-group">
+      <label for="loginEmail">Email</label>
+      <input type="email" id="loginEmail" placeholder="admin@example.com">
+    </div>
+    <div class="field-group">
+      <label for="loginPass">პაროლი</label>
+      <input type="password" id="loginPass" placeholder="••••••••">
+    </div>
+    <button class="btn-submit" id="loginBtn">✦ &nbsp; შესვლა &nbsp; ✦</button>
+    <div class="status-msg" id="loginStatus"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="dash-header">
+    <div>
+      <h1 class="dash-title">მოსული CV-ები</h1>
+      <p class="dash-count" id="dashCount">იტვირთება...</p>
+    </div>
+    <div class="dash-controls">
+      <input type="text" class="search-input" id="searchInput" placeholder="ძებნა სახელით ან კონტაქტით...">
+      <select class="filter-select" id="voucherFilter">
+        <option value="">ყველა</option>
+        <option value="yes">აქვს რეკომენდატორი</option>
+        <option value="no">არ აქვს რეკომენდატორი</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="loadingState" class="loading-state">იტვირთება...</div>
+  <div id="emptyState" class="empty-state" style="display:none;">CV ჯერ არ მოსულა</div>
+
+  <!-- DESKTOP TABLE -->
+  <div class="cv-table-wrap" id="tableWrap" style="display:none;">
+    <table class="cv-table">
+      <thead>
+        <tr>
+          <th data-sort="name">სახელი <span class="sort-arrow"></span></th>
+          <th data-sort="age">ასაკი <span class="sort-arrow"></span></th>
+          <th data-sort="location">ლოკაცია <span class="sort-arrow"></span></th>
+          <th data-sort="contact">კონტაქტი <span class="sort-arrow"></span></th>
+          <th>უნარები</th>
+          <th data-sort="voucher">რეკომენდატორი <span class="sort-arrow"></span></th>
+          <th data-sort="submittedAt">თარიღი <span class="sort-arrow">▼</span></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- MOBILE CARDS -->
+  <div class="cv-cards" id="cardsWrap"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div class="modal-name" id="modalName"></div>
+    <div class="modal-meta" id="modalMeta"></div>
+
+    <div class="modal-field">
+      <div class="modal-field-label">კონტაქტი</div>
+      <div class="modal-field-value" id="modalContact"></div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-field-label">საიდან გაიგო</div>
+      <div class="modal-field-value" id="modalHowKnow"></div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-field-label">უნარები</div>
+      <div class="modal-field-value" id="modalSkills"></div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-field-label">რეკომენდატორი</div>
+      <div class="modal-field-value" id="modalVoucher"></div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-field-label">თავის შესახებ</div>
+      <div class="modal-field-value" id="modalAbout"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getFirestore, collection, getDocs, query, orderBy
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import {
+    getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdp-eW4fnlTUBG7J36pIFz2iTpV_dyRMs",
+    authDomain: "giasklani.firebaseapp.com",
+    projectId: "giasklani",
+    storageBucket: "giasklani.firebasestorage.app",
+    messagingSenderId: "664819824670",
+    appId: "1:664819824670:web:be0b1b0dd645c3d936960f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  const skillLabels = {
+    loyalty: 'ერთგულება',
+    strength: 'ფიზიკური ძალა',
+    connections: 'კავშირები',
+    street_smarts: 'ქუჩის ცოდნა',
+    other: 'სხვა'
+  };
+  const howKnowLabels = {
+    friend: 'მეგობრისგან',
+    social: 'სოც. მედია',
+    street: 'ქუჩაში',
+    other: 'სხვა'
+  };
+
+  let allApps = [];
+  let sortKey = 'submittedAt';
+  let sortDir = 'desc';
+
+  // ── LOGIN ──
+  const loginScreen = document.getElementById('loginScreen');
+  const dashboard = document.getElementById('dashboard');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const loginStatus = document.getElementById('loginStatus');
+  const loginBtn = document.getElementById('loginBtn');
+
+  loginBtn.addEventListener('click', async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass = document.getElementById('loginPass').value;
+    if (!email || !pass) {
+      loginStatus.className = 'status-msg error';
+      loginStatus.textContent = '✗  შეავსე ორივე ველი';
+      return;
+    }
+    loginBtn.disabled = true;
+    loginStatus.className = 'status-msg loading';
+    loginStatus.textContent = '... შემოწმება';
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } catch (err) {
+      console.error(err);
+      loginStatus.className = 'status-msg error';
+      loginStatus.textContent = '✗  არასწორი email ან პაროლი';
+      loginBtn.disabled = false;
+    }
+  });
+
+  document.getElementById('loginPass').addEventListener('keydown', e => {
+    if (e.key === 'Enter') loginBtn.click();
+  });
+
+  logoutBtn.addEventListener('click', () => signOut(auth));
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loginScreen.style.display = 'none';
+      dashboard.classList.add('visible');
+      logoutBtn.style.display = 'inline-block';
+      loadApplications();
+    } else {
+      loginScreen.style.display = 'flex';
+      dashboard.classList.remove('visible');
+      logoutBtn.style.display = 'none';
+      loginBtn.disabled = false;
+      loginStatus.className = '';
+      loginStatus.textContent = '';
+    }
+  });
+
+  // ── LOAD DATA ──
+  async function loadApplications() {
+    const loadingState = document.getElementById('loadingState');
+    const emptyState = document.getElementById('emptyState');
+    loadingState.style.display = 'block';
+    emptyState.style.display = 'none';
+
+    try {
+      const q = query(collection(db, 'applications'), orderBy('submittedAt', 'desc'));
+      const snap = await getDocs(q);
+      allApps = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      loadingState.style.display = 'none';
+
+      if (allApps.length === 0) {
+        emptyState.style.display = 'block';
+      } else {
+        render();
+      }
+    } catch (err) {
+      console.error(err);
+      loadingState.textContent = '✗  მონაცემების ჩატვირთვა ვერ მოხერხდა';
+    }
+  }
+
+  // ── FILTER + SORT ──
+  const searchInput = document.getElementById('searchInput');
+  const voucherFilter = document.getElementById('voucherFilter');
+  searchInput.addEventListener('input', render);
+  voucherFilter.addEventListener('change', render);
+
+  document.querySelectorAll('.cv-table th[data-sort]').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.sort;
+      if (sortKey === key) {
+        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortKey = key;
+        sortDir = key === 'submittedAt' ? 'desc' : 'asc';
+      }
+      document.querySelectorAll('.sort-arrow').forEach(a => a.textContent = '');
+      th.querySelector('.sort-arrow').textContent = sortDir === 'asc' ? '▲' : '▼';
+      render();
+    });
+  });
+
+  function getFiltered() {
+    const term = searchInput.value.trim().toLowerCase();
+    const voucherVal = voucherFilter.value;
+
+    let list = allApps.filter(a => {
+      const matchesTerm = !term ||
+        (a.name || '').toLowerCase().includes(term) ||
+        (a.contact || '').toLowerCase().includes(term) ||
+        (a.location || '').toLowerCase().includes(term);
+      const matchesVoucher = !voucherVal || a.voucher === voucherVal;
+      return matchesTerm && matchesVoucher;
+    });
+
+    list.sort((a, b) => {
+      let av = a[sortKey], bv = b[sortKey];
+      if (sortKey === 'submittedAt') {
+        av = a.submittedAt?.toMillis ? a.submittedAt.toMillis() : 0;
+        bv = b.submittedAt?.toMillis ? b.submittedAt.toMillis() : 0;
+      } else {
+        av = (av ?? '').toString().toLowerCase();
+        bv = (bv ?? '').toString().toLowerCase();
+      }
+      if (av < bv) return sortDir === 'asc' ? -1 : 1;
+      if (av > bv) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    return list;
+  }
+
+  function formatDate(ts) {
+    if (!ts?.toDate) return '—';
+    const d = ts.toDate();
+    return d.toLocaleDateString('ka-GE', { year: 'numeric', month: 'short', day: 'numeric' }) +
+      ' · ' + d.toLocaleTimeString('ka-GE', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function render() {
+    const list = getFiltered();
+    document.getElementById('dashCount').textContent =
+      `სულ: ${allApps.length}   ·   ნაჩვენებია: ${list.length}`;
+
+    document.getElementById('tableWrap').style.display = list.length ? 'block' : 'none';
+
+    // table
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = list.map(a => `
+      <tr>
+        <td class="cell-name">${escapeHtml(a.name || '—')}</td>
+        <td>${a.age ?? '—'}</td>
+        <td class="cell-dim">${escapeHtml(a.location || '—')}</td>
+        <td class="cell-dim">${escapeHtml(a.contact || '—')}</td>
+        <td><div class="badge-row">${(a.skills || []).map(s => `<span class="badge">${escapeHtml(skillLabels[s] || s)}</span>`).join('') || '<span class="cell-dim">—</span>'}</div></td>
+        <td class="${a.voucher === 'yes' ? 'voucher-yes' : 'voucher-no'}">${a.voucher === 'yes' ? ('✓ ' + escapeHtml(a.voucherName || '')) : '—'}</td>
+        <td class="cell-dim">${formatDate(a.submittedAt)}</td>
+        <td><button class="btn-view" data-id="${a.id}">ნახვა</button></td>
+      </tr>
+    `).join('');
+
+    // mobile cards
+    const cards = document.getElementById('cardsWrap');
+    cards.innerHTML = list.map(a => `
+      <div class="cv-card" data-id="${a.id}">
+        <div class="cv-card-top">
+          <span class="cv-card-name">${escapeHtml(a.name || '—')}</span>
+          <span class="cv-card-date">${formatDate(a.submittedAt)}</span>
+        </div>
+        <div class="cv-card-meta">${escapeHtml(a.location || '—')} · ${a.age ?? '—'} წლის</div>
+        <div class="cv-card-meta">${escapeHtml(a.contact || '—')}</div>
+        <div class="badge-row">${(a.skills || []).map(s => `<span class="badge">${escapeHtml(skillLabels[s] || s)}</span>`).join('')}</div>
+        <button class="btn-view" data-id="${a.id}" style="margin-top:0.4rem;align-self:flex-start;">ნახვა</button>
+      </div>
+    `).join('');
+
+    document.querySelectorAll('.btn-view').forEach(btn => {
+      btn.addEventListener('click', () => openModal(btn.dataset.id));
+    });
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, m => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[m]));
+  }
+
+  // ── MODAL ──
+  const modalOverlay = document.getElementById('modalOverlay');
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+
+  function openModal(id) {
+    const a = allApps.find(x => x.id === id);
+    if (!a) return;
+    document.getElementById('modalName').textContent = a.name || '—';
+    document.getElementById('modalMeta').textContent =
+      `${a.age ?? '—'} წლის · ${a.location || '—'} · ${formatDate(a.submittedAt)}`;
+    document.getElementById('modalContact').textContent = a.contact || '—';
+    document.getElementById('modalHowKnow').textContent = howKnowLabels[a.howKnow] || a.howKnow || '—';
+    document.getElementById('modalSkills').textContent =
+      (a.skills || []).map(s => skillLabels[s] || s).join(', ') || '—';
+    document.getElementById('modalVoucher').textContent =
+      a.voucher === 'yes' ? `✓ დიახ — ${a.voucherName || 'სახელი არ მითითებულა'}` : 'არა';
+    document.getElementById('modalAbout').textContent = a.about || '—';
+    modalOverlay.classList.add('open');
+  }
+  function closeModal() { modalOverlay.classList.remove('open'); }
+</script>
+
+</body>
+</html>

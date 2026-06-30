@@ -560,15 +560,33 @@
   }
   .wall-art:hover img { transform: scale(1.04); }
 
-  /* ── JOIN CTA ── */
-  #join-cta {
+  /* ── DUAL CTA (JOIN + DONATE) ── */
+  #dual-cta {
     background: var(--dark);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    padding: 5rem 1.5rem;
-    text-align: center;
+    padding: 0;
   }
-  .join-inner { max-width: 620px; margin: 0 auto; }
+  .dual-cta-grid {
+    display: flex;
+    align-items: stretch;
+    position: relative;
+  }
+  .dual-col {
+    flex: 0 0 50%;
+    text-align: center;
+    padding: 5rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .dual-divider-line {
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(200,169,110,0.25) 20%, rgba(200,169,110,0.25) 80%, transparent);
+    flex: 0 0 1px;
+  }
+  .join-inner { max-width: 460px; margin: 0 auto; }
 
   .cta-btn {
     display: inline-block;
@@ -654,6 +672,10 @@
     .scroll-hint { left: 50%; }
     nav { padding: 1rem 1.5rem; }
     nav.scrolled { padding: 0.6rem 1.5rem; }
+
+    .dual-cta-grid { flex-direction: column; }
+    .dual-col { flex: none; padding: 3.5rem 2rem; }
+    .dual-divider-line { width: 100%; height: 1px; background: linear-gradient(to right, transparent, rgba(200,169,110,0.25) 20%, rgba(200,169,110,0.25) 80%, transparent); }
   }
 
   /* ── RESPONSIVE — MOBILE ── */
@@ -677,7 +699,7 @@
     .rule-num { font-size: 1.8rem; }
     .rule-en { font-size: 0.8rem; letter-spacing: 2px; }
 
-    #join-cta { padding: 3.5rem 1.2rem; }
+    .dual-col { padding: 3rem 1.2rem; }
     .cta-btn { padding: 0.85rem 2rem; font-size: 0.78rem; letter-spacing: 3px; }
 
     .section-heading { font-size: clamp(1.8rem, 8vw, 3rem); }
@@ -738,35 +760,40 @@
   <p class="scroll-hint">↓ SCROLL ↓</p>
 </section>
 
-<!-- JOIN CTA -->
-<section id="join-cta">
-  <div class="join-inner reveal">
-    <p class="section-label">გაწევრიანება</p>
-    <h2 class="section-heading" style="font-family: 'Black Ops One', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 0.8rem;">შემოგვიერთდი</h2>
-    <div class="divider" style="margin: 0 auto 2rem;"></div>
-    <p style="font-size: 0.9rem; color: var(--dim); line-height: 1.8; margin-bottom: 2.5rem;">
-      კლანი ყველასთვის არ არის.<br>
-      თუ გრძნობ რომ ეს შენი სამყაროა — გამოგვიგზავნე CV.
-    </p>
-    <a href="join.html" class="cta-btn">
-      <span>✦ &nbsp; CV გაგზავნა &nbsp; ✦</span>
-    </a>
-  </div>
-</section>
+<!-- JOIN + DONATE CTA -->
+<section id="dual-cta">
+  <div class="dual-cta-grid">
+    <div class="dual-col reveal-left">
+      <div class="join-inner">
+        <p class="section-label">გაწევრიანება</p>
+        <h2 class="section-heading" style="font-family: 'Black Ops One', sans-serif; font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: 0.8rem;">შემოგვიერთდი</h2>
+        <div class="divider" style="margin: 0 auto 2rem;"></div>
+        <p style="font-size: 0.9rem; color: var(--dim); line-height: 1.8; margin-bottom: 2.5rem;">
+          კლანი ყველასთვის არ არის.<br>
+          თუ გრძნობ რომ ეს შენი სამყაროა — გამოგვიგზავნე CV.
+        </p>
+        <a href="join.html" class="cta-btn">
+          <span>✦ &nbsp; CV გაგზავნა &nbsp; ✦</span>
+        </a>
+      </div>
+    </div>
 
-<!-- DONATE CTA -->
-<section id="donate-cta" style="background: var(--black); text-align:center; padding: 5rem 1.5rem;">
-  <div class="join-inner reveal">
-    <p class="section-label">მხარდაჭერა</p>
-    <h2 class="section-heading" style="font-family: 'Black Ops One', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 0.8rem;">დაუჭირე მხარი კლანს</h2>
-    <div class="divider" style="margin: 0 auto 2rem;"></div>
-    <p style="font-size: 0.9rem; color: var(--dim); line-height: 1.8; margin-bottom: 2.5rem;">
-      ყველა დონაცია გვეხმარება დავამყაროთ ის, რაც ერთად ავაშენეთ.<br>
-      ერთი სამყარო, ერთი სისხლი, ერთი მხარდაჭერა.
-    </p>
-    <a href="donate.html" class="cta-btn">
-      <span>✦ &nbsp; დონაცია &nbsp; ✦</span>
-    </a>
+    <div class="dual-divider-line"></div>
+
+    <div class="dual-col reveal-right">
+      <div class="join-inner">
+        <p class="section-label">მხარდაჭერა</p>
+        <h2 class="section-heading" style="font-family: 'Black Ops One', sans-serif; font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: 0.8rem;">დაუჭირე მხარი</h2>
+        <div class="divider" style="margin: 0 auto 2rem;"></div>
+        <p style="font-size: 0.9rem; color: var(--dim); line-height: 1.8; margin-bottom: 2.5rem;">
+          ყველა დონაცია გვეხმარება დავამყაროთ ის, რაც ერთად ავაშენეთ.<br>
+          ერთი სამყარო, ერთი სისხლი, ერთი მხარდაჭერა.
+        </p>
+        <a href="donate.html" class="cta-btn">
+          <span>✦ &nbsp; დონაცია &nbsp; ✦</span>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 
