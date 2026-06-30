@@ -571,6 +571,8 @@
     display: flex;
     align-items: stretch;
     position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
   }
   .dual-col {
     flex: 0 0 50%;
@@ -719,9 +721,18 @@
   }
 
   /* Extra small */
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     .codex-rules { grid-template-columns: 1fr; }
     .hero-left { padding: 5rem 1.2rem 1.5rem; }
+    .nav-logo { font-size: 1rem; }
+    .hero-title { letter-spacing: -0.5px; }
+    .hero-georgian { font-size: 0.8rem; letter-spacing: 1px; }
+    .hero-subtitle { letter-spacing: 5px; }
+    .cta-btn { padding: 0.75rem 1.5rem; font-size: 0.7rem; letter-spacing: 2px; }
+    .dual-col { padding: 2.5rem 1rem; }
+    .about-text p { font-size: 0.88rem; }
+    .footer-name { font-size: 1.5rem; }
+    .section-heading { font-size: clamp(1.5rem, 9vw, 2.4rem); }
   }
 </style>
 </head>

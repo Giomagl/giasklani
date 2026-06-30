@@ -275,6 +275,7 @@
     font-size: 0.85rem;
     color: var(--white);
     vertical-align: top;
+    overflow-wrap: anywhere;
   }
   .cv-table tr:last-child td { border-bottom: none; }
   .cv-table tr { transition: background 0.15s; }
@@ -370,6 +371,7 @@
     color: var(--white);
     line-height: 1.7;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
 
   /* mobile cards */
@@ -384,7 +386,7 @@
   .cv-card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
   .cv-card-name { font-weight: 600; font-size: 1rem; }
   .cv-card-date { font-family: var(--font-title); font-size: 0.65rem; letter-spacing: 1px; color: var(--dim); white-space: nowrap; }
-  .cv-card-meta { font-size: 0.8rem; color: var(--dim); }
+  .cv-card-meta { font-size: 0.8rem; color: var(--dim); overflow-wrap: anywhere; }
 
   @media (max-width: 880px) {
     .cv-table-wrap { display: none; }
@@ -395,6 +397,25 @@
     nav { padding: 1rem 1.2rem; }
     .dash-controls { width: 100%; }
     .search-input { flex: 1; min-width: 0; }
+    .dash-header { flex-direction: column; align-items: flex-start; }
+    .login-card { padding: 2rem 1.6rem; }
+    .modal-box { padding: 1.6rem 1.3rem; }
+    .filter-select { flex: 1; }
+  }
+  @media (max-width: 420px) {
+    nav { padding: 0.9rem 1rem; }
+    .nav-logo { font-size: 1rem; }
+    .nav-back, .nav-logout { font-size: 0.7rem; letter-spacing: 2px; }
+    #dashboard { padding: 6rem 0.9rem 2.5rem; }
+    .dash-title { font-size: 1.5rem; }
+    .login-card { padding: 1.6rem 1.2rem; }
+    .login-title { font-size: 1.4rem; }
+    .btn-submit { font-size: 0.75rem; letter-spacing: 3px; padding: 0.8rem; }
+    .cv-card { padding: 1rem 1rem; }
+    .cv-card-top { flex-wrap: wrap; }
+    .modal-box { padding: 1.4rem 1.1rem; }
+    .modal-name { font-size: 1.3rem; }
+    .modal-close { top: 0.9rem; right: 1rem; }
   }
 </style>
 </head>

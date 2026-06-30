@@ -337,6 +337,18 @@
     margin-top: 1.5rem;
     letter-spacing: 1px;
   }
+  .footer-admin-link {
+    display: inline-block;
+    margin-top: 1.2rem;
+    font-family: var(--font-title);
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    color: var(--dimmer);
+    text-decoration: none;
+    opacity: 0.5;
+    transition: color 0.2s, opacity 0.2s;
+  }
+  .footer-admin-link:hover { color: var(--dim); opacity: 1; }
 
   @media (max-width: 700px) {
     .nav-links { display: none; }
@@ -348,6 +360,15 @@
     .donate-panel { padding: 2rem 1.4rem; }
     .cta-btn { padding: 0.95rem 2.4rem; font-size: 0.82rem; letter-spacing: 3px; }
     footer { padding: 2.5rem 1.2rem; }
+  }
+
+  @media (max-width: 380px) {
+    main { padding: 6rem 1rem 2.5rem; }
+    .donate-panel { padding: 1.6rem 1.1rem; }
+    .cta-btn { padding: 0.85rem 1.6rem; font-size: 0.72rem; letter-spacing: 2px; }
+    .donate-title { letter-spacing: -0.5px; }
+    .nav-logo { font-size: 1rem; }
+    .donate-text { font-size: 0.88rem; }
   }
 </style>
 </head>
@@ -408,6 +429,7 @@
   <span class="footer-stars">✦ ✦ ✦</span>
   <div class="footer-name">Gia's Clan</div>
   <div class="footer-geo">ვინც იცის — იცის &nbsp;·&nbsp; ყოველთვის ერთად</div>
+  <a href="admin.html" class="footer-admin-link">ადმინი</a>
 </footer>
 
 <script>

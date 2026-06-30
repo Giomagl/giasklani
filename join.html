@@ -308,7 +308,7 @@
   }
   .success-title {
     font-family: 'Black Ops One', sans-serif;
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 7vw, 2rem);
     color: var(--white);
     margin-bottom: 0.8rem;
   }
@@ -329,12 +329,34 @@
   .footer-stars { display: block; font-size: 1rem; color: var(--accent); opacity: 0.4; letter-spacing: 0.8rem; margin-bottom: 0.8rem; }
   .footer-name { font-family: var(--font-tag); font-size: 1.4rem; color: var(--white); }
   .footer-geo { font-family: var(--font-body); font-size: 0.7rem; color: var(--dimmer); margin-top: 1rem; letter-spacing: 1px; }
+  .footer-admin-link {
+    display: inline-block;
+    margin-top: 1rem;
+    font-family: var(--font-title);
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    color: var(--dimmer);
+    text-decoration: none;
+    opacity: 0.5;
+    transition: color 0.2s, opacity 0.2s;
+  }
+  .footer-admin-link:hover { color: var(--dim); opacity: 1; }
 
   @media (max-width: 600px) {
     .page-wrapper { padding: 7rem 1.2rem 4rem; }
     .cv-form { padding: 1.8rem 1.2rem; }
     .field-row { grid-template-columns: 1fr; }
     nav { padding: 1rem 1.2rem; }
+  }
+
+  @media (max-width: 380px) {
+    .page-wrapper { padding: 6.5rem 1rem 3rem; }
+    .cv-form { padding: 1.4rem 1rem; }
+    .header-eyebrow { letter-spacing: 5px; }
+    .btn-submit { font-size: 0.75rem; letter-spacing: 3px; padding: 0.85rem; }
+    .nav-logo { font-size: 1rem; }
+    .nav-back { font-size: 0.7rem; letter-spacing: 2px; }
+    .check-item { font-size: 0.8rem; }
   }
 </style>
 </head>
@@ -474,6 +496,7 @@
   <span class="footer-stars">✦ ✦ ✦</span>
   <div class="footer-name">Gia's Clan</div>
   <div class="footer-geo">ვინც იცის — იცის &nbsp;·&nbsp; ყოველთვის ერთად</div>
+  <a href="admin.html" class="footer-admin-link">ადმინი</a>
 </footer>
 
 <!-- FIREBASE -->
