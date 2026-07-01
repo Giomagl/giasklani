@@ -744,12 +744,12 @@
     font-family: var(--font-body);
   }
   #chatToggleBtn {
-    width: 56px; height: 56px;
+    width: 64px; height: 64px;
     border-radius: 50%;
     background: var(--accent);
     color: var(--black);
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     font-family: var(--font-tag);
     cursor: pointer;
     box-shadow: 0 6px 22px rgba(200,169,110,0.35);
@@ -760,12 +760,12 @@
 
   #chatPanel {
     position: absolute;
-    bottom: 72px;
+    bottom: 80px;
     right: 0;
-    width: 340px;
+    width: 420px;
     max-width: calc(100vw - 2rem);
-    height: 460px;
-    max-height: 70vh;
+    height: 580px;
+    max-height: 78vh;
     background: var(--panel);
     border: 1px solid var(--border);
     display: none;
@@ -777,7 +777,7 @@
 
   #chatHeader {
     background: var(--dark);
-    padding: 0.9rem 1.1rem;
+    padding: 1rem 1.2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -787,34 +787,50 @@
   #chatHeader-title {
     font-family: var(--font-title);
     letter-spacing: 3px;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: var(--accent);
   }
-  #chatHeaderRight { display: flex; align-items: center; gap: 0.8rem; }
-  #chatChangeName {
+  #chatAdminBadge {
+    display: none;
+    font-family: var(--font-title);
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    color: var(--black);
+    background: var(--accent);
+    padding: 0.15rem 0.45rem;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+  #chatHeaderRight { display: flex; align-items: center; gap: 0.9rem; }
+  #chatChangeName, #chatAdminLogout {
     background: none; border: none; color: var(--dimmer);
-    font-family: var(--font-title); font-size: 0.6rem; letter-spacing: 1px;
+    font-family: var(--font-title); font-size: 0.65rem; letter-spacing: 1px;
     cursor: pointer; transition: color 0.2s; display: none;
   }
-  #chatChangeName:hover { color: var(--dim); }
+  #chatAdminGear {
+    background: none; border: none; color: var(--dimmer);
+    font-family: var(--font-title); font-size: 0.95rem;
+    cursor: pointer; transition: color 0.2s;
+  }
+  #chatChangeName:hover, #chatAdminGear:hover, #chatAdminLogout:hover { color: var(--dim); }
   #chatPanelClose {
     background: none; border: none; color: var(--dim);
-    font-size: 1.3rem; line-height: 1; cursor: pointer; transition: color 0.2s;
+    font-size: 1.4rem; line-height: 1; cursor: pointer; transition: color 0.2s;
   }
   #chatPanelClose:hover { color: var(--accent); }
 
-  #chatNameGate { padding: 1.6rem 1.3rem; text-align: center; }
+  #chatNameGate { padding: 1.8rem 1.4rem; text-align: center; }
   #chatNameGate p {
-    font-size: 0.82rem; color: var(--dim); line-height: 1.6; margin-bottom: 1.1rem;
+    font-size: 0.88rem; color: var(--dim); line-height: 1.6; margin-bottom: 1.2rem;
   }
   #chatNameInput {
     width: 100%;
     background: var(--black);
     border: 1px solid var(--border);
     color: var(--white);
-    padding: 0.7rem 0.9rem;
-    margin-bottom: 0.8rem;
-    font-size: 0.85rem;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.9rem;
+    font-size: 0.95rem;
     outline: none;
     font-family: var(--font-body);
     transition: border-color 0.2s;
@@ -826,27 +842,98 @@
     background: transparent;
     border: 1px solid var(--accent);
     color: var(--accent);
-    padding: 0.7rem;
+    padding: 0.8rem;
     font-family: var(--font-title);
     letter-spacing: 3px;
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
   }
   #chatNameSubmit:hover { background: var(--accent); color: var(--black); }
 
+  /* ── ADMIN LOGIN MINI PANEL ── */
+  #chatAdminLogin {
+    display: none;
+    padding: 1.5rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(200,169,110,0.03);
+    flex-shrink: 0;
+  }
+  #chatAdminLogin.open { display: block; }
+  #chatAdminLogin p {
+    font-family: var(--font-title);
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    color: var(--dim);
+    margin-bottom: 0.8rem;
+  }
+  #chatAdminLogin input {
+    width: 100%;
+    background: var(--black);
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 0.6rem 0.85rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.85rem;
+    outline: none;
+    font-family: var(--font-body);
+  }
+  #chatAdminLogin input:focus { border-color: rgba(200,169,110,0.45); }
+  #chatAdminLoginBtn {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.6rem;
+    font-family: var(--font-title);
+    letter-spacing: 2px;
+    font-size: 0.68rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  #chatAdminLoginBtn:hover { background: var(--accent); color: var(--black); }
+  #chatAdminLoginStatus {
+    font-family: var(--font-title);
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    color: #e07070;
+    margin-top: 0.5rem;
+    display: none;
+  }
+
   #chatMessages {
     flex: 1;
     overflow-y: auto;
-    padding: 1rem 1.1rem;
+    padding: 1.1rem 1.2rem;
     display: none;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1rem;
   }
-  .chat-empty { text-align: center; color: var(--dimmer); font-size: 0.78rem; margin-top: 1rem; }
-  .chat-msg { font-size: 0.83rem; line-height: 1.5; }
-  .chat-msg-name { font-family: var(--font-title); font-size: 0.62rem; letter-spacing: 1.5px; color: var(--dim); margin-bottom: 0.2rem; }
+  .chat-empty { text-align: center; color: var(--dimmer); font-size: 0.82rem; margin-top: 1rem; }
+  .chat-system-msg { text-align: center; color: var(--dimmer); font-size: 0.75rem; font-style: italic; }
+  .chat-msg { font-size: 0.92rem; line-height: 1.55; }
+  .chat-msg-name {
+    font-family: var(--font-title);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    color: var(--dim);
+    margin-bottom: 0.25rem;
+  }
   .chat-msg-self .chat-msg-name { color: var(--accent); }
+  .chat-role-badge {
+    display: inline-block;
+    font-family: var(--font-title);
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    color: var(--black);
+    background: var(--accent);
+    padding: 0.1rem 0.4rem;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+  }
+  .chat-role-badge.role-moderator { background: #7fa8c9; }
+  .chat-role-badge.role-accountant { background: #8fc98f; }
+  .chat-role-badge.role-ganabi { background: #555; color: #ccc; }
   .chat-msg-text { color: var(--white); overflow-wrap: anywhere; }
 
   #chatForm {
@@ -859,8 +946,8 @@
     background: var(--black);
     border: none;
     color: var(--white);
-    padding: 0.85rem 1rem;
-    font-size: 0.85rem;
+    padding: 1rem 1.1rem;
+    font-size: 0.92rem;
     outline: none;
     font-family: var(--font-body);
     min-width: 0;
@@ -870,9 +957,9 @@
     background: var(--accent);
     border: none;
     color: var(--black);
-    width: 50px;
+    width: 56px;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     flex-shrink: 0;
     transition: background 0.2s;
   }
@@ -883,34 +970,35 @@
       bottom: max(1.1rem, env(safe-area-inset-bottom));
       right: 1.1rem;
     }
-    #chatToggleBtn { width: 52px; height: 52px; font-size: 1.35rem; }
+    #chatToggleBtn { width: 58px; height: 58px; font-size: 1.5rem; }
     #chatPanel {
-      width: calc(100vw - 1.6rem);
-      height: 72vh;
-      max-height: 72vh;
-      bottom: 64px;
+      width: calc(100vw - 1.4rem);
+      height: 78vh;
+      max-height: 78vh;
+      bottom: 70px;
     }
-    #chatHeader { padding: 0.8rem 1rem; }
-    #chatHeader-title { font-size: 0.68rem; letter-spacing: 2px; }
-    #chatChangeName { font-size: 0.55rem; }
-    #chatNameGate { padding: 1.3rem 1.1rem; }
-    #chatNameGate p { font-size: 0.78rem; }
-    #chatMessages { padding: 0.85rem 0.9rem; }
-    .chat-msg { font-size: 0.82rem; }
+    #chatHeader { padding: 0.85rem 1.05rem; }
+    #chatHeader-title { font-size: 0.72rem; letter-spacing: 2px; }
+    #chatChangeName, #chatAdminGear, #chatAdminLogout { font-size: 0.58rem; }
+    #chatNameGate { padding: 1.4rem 1.15rem; }
+    #chatNameGate p { font-size: 0.82rem; }
+    #chatMessages { padding: 0.9rem 0.95rem; }
+    .chat-msg { font-size: 0.88rem; }
+    .chat-msg-name { font-size: 0.78rem; }
     /* 16px min font-size prevents iOS Safari auto-zoom on focus */
-    #chatNameInput, #chatInput { font-size: 16px; }
-    #chatInput { padding: 0.8rem 0.9rem; }
-    #chatSendBtn { width: 46px; font-size: 1rem; }
+    #chatNameInput, #chatInput, #chatAdminLogin input { font-size: 16px; }
+    #chatInput { padding: 0.85rem 0.95rem; }
+    #chatSendBtn { width: 48px; font-size: 1.05rem; }
   }
 
   @media (max-width: 360px) {
-    #chatPanel { width: calc(100vw - 1.2rem); height: 75vh; max-height: 75vh; }
+    #chatPanel { width: calc(100vw - 1rem); height: 80vh; max-height: 80vh; }
     #chatWidget { right: 0.9rem; }
-    #chatToggleBtn { width: 48px; height: 48px; font-size: 1.2rem; }
+    #chatToggleBtn { width: 52px; height: 52px; font-size: 1.3rem; }
   }
 
   @media (max-height: 560px) and (max-width: 900px) {
-    #chatPanel { height: 82vh; max-height: 82vh; }
+    #chatPanel { height: 86vh; max-height: 86vh; }
   }
 </style>
 </head>
@@ -1068,11 +1156,21 @@
 
   <div id="chatPanel">
     <div id="chatHeader">
-      <span id="chatHeader-title">კლანის ჩატი</span>
+      <span id="chatHeader-title">კლანის ჩატი<span id="chatAdminBadge">ადმინი</span></span>
       <div id="chatHeaderRight">
         <button id="chatChangeName">სახელის შეცვლა</button>
+        <button id="chatAdminGear" title="ადმინად შესვლა">⚙</button>
+        <button id="chatAdminLogout">გასვლა</button>
         <button id="chatPanelClose" aria-label="close">&times;</button>
       </div>
+    </div>
+
+    <div id="chatAdminLogin">
+      <p>ადმინად შესვლა</p>
+      <input type="email" id="chatAdminEmail" placeholder="email" autocomplete="off">
+      <input type="password" id="chatAdminPass" placeholder="პაროლი" autocomplete="off">
+      <button id="chatAdminLoginBtn">შესვლა</button>
+      <div id="chatAdminLoginStatus"></div>
     </div>
 
     <div id="chatNameGate">
@@ -1164,8 +1262,12 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import {
-    getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp
+    getFirestore, collection, addDoc, doc, setDoc, deleteDoc, getDocs,
+    query, orderBy, limit, onSnapshot, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import {
+    getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCdp-eW4fnlTUBG7J36pIFz2iTpV_dyRMs",
@@ -1178,9 +1280,26 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  const ROLE_LABELS = {
+    admin: 'ადმინი',
+    moderator: 'მოდერატორი',
+    accountant: 'ბუღალტერი',
+    ganabi: 'განაბი'
+  };
+  const ROLE_CLASS = {
+    admin: '',
+    moderator: 'role-moderator',
+    accountant: 'role-accountant',
+    ganabi: 'role-ganabi'
+  };
+  const VALID_ROLE_KEYS = Object.keys(ROLE_LABELS);
 
   const STORAGE_KEY = 'giasClanChatName';
   let myName = localStorage.getItem(STORAGE_KEY) || '';
+  let isAdmin = false;
+  let rolesMap = {};
 
   const toggleBtn = document.getElementById('chatToggleBtn');
   const panel = document.getElementById('chatPanel');
@@ -1194,8 +1313,16 @@
   const chatInput = document.getElementById('chatInput');
   const iconOpen = document.getElementById('chatIconOpen');
   const iconClose = document.getElementById('chatIconClose');
+  const adminGear = document.getElementById('chatAdminGear');
+  const adminLoginPanel = document.getElementById('chatAdminLogin');
+  const adminEmailInput = document.getElementById('chatAdminEmail');
+  const adminPassInput = document.getElementById('chatAdminPass');
+  const adminLoginBtn = document.getElementById('chatAdminLoginBtn');
+  const adminLoginStatus = document.getElementById('chatAdminLoginStatus');
+  const adminLogoutBtn = document.getElementById('chatAdminLogout');
+  const adminBadge = document.getElementById('chatAdminBadge');
 
-  let unsubscribe = null;
+  let unsubMessages = null;
   let lastSendTime = 0;
 
   function escapeHtml(str) {
@@ -1203,6 +1330,7 @@
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[m]));
   }
+  function normName(n) { return n.trim(); }
 
   function openPanel() {
     panel.classList.add('open');
@@ -1222,10 +1350,11 @@
 
   function showChat() {
     nameGate.style.display = 'none';
+    adminLoginPanel.classList.remove('open');
     messagesWrap.style.display = 'flex';
     chatForm.style.display = 'flex';
     changeNameBtn.style.display = 'inline-block';
-    startListening();
+    startListeningMessages();
   }
 
   function showNameGate() {
@@ -1251,41 +1380,194 @@
     showNameGate();
   });
 
-  function startListening() {
-    if (unsubscribe) return;
-    const q = query(collection(db, 'chatMessages'), orderBy('createdAt', 'desc'), limit(100));
-    unsubscribe = onSnapshot(q, snap => {
+  // ── ADMIN LOGIN ──
+  adminGear.addEventListener('click', () => {
+    adminLoginPanel.classList.toggle('open');
+  });
+
+  adminLoginBtn.addEventListener('click', doAdminLogin);
+  adminPassInput.addEventListener('keydown', e => { if (e.key === 'Enter') doAdminLogin(); });
+
+  async function doAdminLogin() {
+    const email = adminEmailInput.value.trim();
+    const pass = adminPassInput.value;
+    adminLoginStatus.style.display = 'none';
+    if (!email || !pass) return;
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+      adminEmailInput.value = '';
+      adminPassInput.value = '';
+      adminLoginPanel.classList.remove('open');
+    } catch (err) {
+      adminLoginStatus.textContent = '✗ არასწორი email ან პაროლი';
+      adminLoginStatus.style.display = 'block';
+    }
+  }
+
+  adminLogoutBtn.addEventListener('click', () => signOut(auth));
+
+  onAuthStateChanged(auth, user => {
+    isAdmin = !!user;
+    adminBadge.style.display = isAdmin ? 'inline-block' : 'none';
+    adminLogoutBtn.style.display = isAdmin ? 'inline-block' : 'none';
+  });
+
+  // ── ROLES (live) ──
+  onSnapshot(collection(db, 'chatRoles'), snap => {
+    rolesMap = {};
+    snap.forEach(d => { rolesMap[d.id] = d.data().role; });
+  });
+
+  // ── MESSAGES ──
+  function renderMessages(msgs) {
+    if (msgs.length === 0) {
+      messagesWrap.innerHTML = '<p class="chat-empty">ჯერ არავის დაუწერია — იყავი პირველი ✦</p>';
+      return;
+    }
+    messagesWrap.innerHTML = msgs.map(m => {
+      const roleKey = m.role;
+      const roleLabel = (roleKey && ROLE_LABELS[roleKey])
+        ? `<span class="chat-role-badge ${ROLE_CLASS[roleKey]}">${ROLE_LABELS[roleKey]}</span>` : '';
+      return `
+        <div class="chat-msg ${m.name === myName ? 'chat-msg-self' : ''}">
+          <div class="chat-msg-name">${escapeHtml(m.name || 'უცნობი')}${roleLabel}</div>
+          <div class="chat-msg-text">${escapeHtml(m.text || '')}</div>
+        </div>
+      `;
+    }).join('');
+    messagesWrap.scrollTop = messagesWrap.scrollHeight;
+  }
+
+  function startListeningMessages() {
+    if (unsubMessages) return;
+    const q = query(collection(db, 'chatMessages'), orderBy('createdAt', 'desc'), limit(150));
+    unsubMessages = onSnapshot(q, snap => {
       const msgs = snap.docs.map(d => d.data()).reverse();
-      if (msgs.length === 0) {
-        messagesWrap.innerHTML = '<p class="chat-empty">ჯერ არავის დაუწერია — იყავი პირველი ✦</p>';
-      } else {
-        messagesWrap.innerHTML = msgs.map(m => `
-          <div class="chat-msg ${m.name === myName ? 'chat-msg-self' : ''}">
-            <div class="chat-msg-name">${escapeHtml(m.name || 'უცნობი')}</div>
-            <div class="chat-msg-text">${escapeHtml(m.text || '')}</div>
-          </div>
-        `).join('');
-      }
-      messagesWrap.scrollTop = messagesWrap.scrollHeight;
+      renderMessages(msgs);
     });
+  }
+
+  function showLocalSystemMessage(text) {
+    const div = document.createElement('div');
+    div.className = 'chat-system-msg';
+    div.textContent = text;
+    messagesWrap.appendChild(div);
+    messagesWrap.scrollTop = messagesWrap.scrollHeight;
+  }
+
+  // ── ADMIN COMMANDS ──
+  async function handleCommand(raw) {
+    const parts = raw.trim().split(/\s+/);
+    const cmd = parts[0].toLowerCase();
+
+    if (cmd === '/help') {
+      showLocalSystemMessage('ბრძანებები: /role სახელი admin|moderator|accountant|ganabi|none · /mute სახელი · /unmute სახელი · /clear');
+      return;
+    }
+
+    if (!isAdmin) {
+      showLocalSystemMessage('ეს ბრძანება მხოლოდ ადმინისთვისაა ხელმისაწვდომი. შედი ⚙ ღილაკით.');
+      return;
+    }
+
+    if (cmd === '/role') {
+      const targetName = parts[1];
+      const roleKey = (parts[2] || '').toLowerCase();
+      if (!targetName || !roleKey) {
+        showLocalSystemMessage('გამოყენება: /role სახელი admin|moderator|accountant|ganabi|none');
+        return;
+      }
+      const id = normName(targetName);
+      try {
+        if (roleKey === 'none' || roleKey === 'clear') {
+          await deleteDoc(doc(db, 'chatRoles', id));
+          showLocalSystemMessage(`${targetName}-ს როლი მოეხსნა`);
+        } else if (VALID_ROLE_KEYS.includes(roleKey)) {
+          await setDoc(doc(db, 'chatRoles', id), { role: roleKey, displayName: targetName });
+          showLocalSystemMessage(`${targetName} → ${ROLE_LABELS[roleKey]}`);
+        } else {
+          showLocalSystemMessage('არასწორი როლი. გამოიყენე: admin, moderator, accountant, ganabi, none');
+        }
+      } catch (err) {
+        console.error(err);
+        showLocalSystemMessage('შეცდომა როლის მინიჭებისას');
+      }
+      return;
+    }
+
+    if (cmd === '/mute') {
+      const targetName = parts[1];
+      if (!targetName) { showLocalSystemMessage('გამოყენება: /mute სახელი'); return; }
+      const id = normName(targetName);
+      try {
+        await setDoc(doc(db, 'chatMuted', id), { mutedAt: serverTimestamp(), displayName: targetName });
+        showLocalSystemMessage(`${targetName} დადუმებულია`);
+      } catch (err) {
+        console.error(err);
+        showLocalSystemMessage('შეცდომა დადუმებისას');
+      }
+      return;
+    }
+
+    if (cmd === '/unmute') {
+      const targetName = parts[1];
+      if (!targetName) { showLocalSystemMessage('გამოყენება: /unmute სახელი'); return; }
+      const id = normName(targetName);
+      try {
+        await deleteDoc(doc(db, 'chatMuted', id));
+        showLocalSystemMessage(`${targetName}-ს ხმა დაუბრუნდა`);
+      } catch (err) {
+        console.error(err);
+        showLocalSystemMessage('შეცდომა');
+      }
+      return;
+    }
+
+    if (cmd === '/clear') {
+      try {
+        const snap = await getDocs(collection(db, 'chatMessages'));
+        await Promise.all(snap.docs.map(d => deleteDoc(doc(db, 'chatMessages', d.id))));
+        showLocalSystemMessage('ჩატი გასუფთავდა');
+      } catch (err) {
+        console.error(err);
+        showLocalSystemMessage('შეცდომა გასუფთავებისას');
+      }
+      return;
+    }
+
+    showLocalSystemMessage('უცნობი ბრძანება. სცადე /help');
   }
 
   chatForm.addEventListener('submit', async e => {
     e.preventDefault();
     const text = chatInput.value.trim();
     if (!text || !myName) return;
+
+    if (text.startsWith('/')) {
+      chatInput.value = '';
+      await handleCommand(text);
+      return;
+    }
+
     const now = Date.now();
     if (now - lastSendTime < 1200) return;
     lastSendTime = now;
     chatInput.value = '';
+
+    const role = isAdmin ? 'admin' : (rolesMap[normName(myName)] || null);
+
     try {
       await addDoc(collection(db, 'chatMessages'), {
         name: myName,
         text: text.slice(0, 300),
+        role: role,
         createdAt: serverTimestamp()
       });
     } catch (err) {
       console.error(err);
+      if (err.code === 'permission-denied') {
+        showLocalSystemMessage('შენ დადუმებული ხარ ჩატში.');
+      }
     }
   });
 </script>
