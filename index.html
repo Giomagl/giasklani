@@ -734,6 +734,158 @@
     .footer-name { font-size: 1.5rem; }
     .section-heading { font-size: clamp(1.5rem, 9vw, 2.4rem); }
   }
+
+  /* ── LIVE CHAT WIDGET ── */
+  #chatWidget {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 250;
+    font-family: var(--font-body);
+  }
+  #chatToggleBtn {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--black);
+    border: none;
+    font-size: 1.5rem;
+    font-family: var(--font-tag);
+    cursor: pointer;
+    box-shadow: 0 6px 22px rgba(200,169,110,0.35);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  #chatToggleBtn:hover { transform: scale(1.06); box-shadow: 0 8px 28px rgba(200,169,110,0.45); }
+
+  #chatPanel {
+    position: absolute;
+    bottom: 72px;
+    right: 0;
+    width: 340px;
+    max-width: calc(100vw - 2rem);
+    height: 460px;
+    max-height: 70vh;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.55);
+  }
+  #chatPanel.open { display: flex; }
+
+  #chatHeader {
+    background: var(--dark);
+    padding: 0.9rem 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  #chatHeader-title {
+    font-family: var(--font-title);
+    letter-spacing: 3px;
+    font-size: 0.75rem;
+    color: var(--accent);
+  }
+  #chatHeaderRight { display: flex; align-items: center; gap: 0.8rem; }
+  #chatChangeName {
+    background: none; border: none; color: var(--dimmer);
+    font-family: var(--font-title); font-size: 0.6rem; letter-spacing: 1px;
+    cursor: pointer; transition: color 0.2s; display: none;
+  }
+  #chatChangeName:hover { color: var(--dim); }
+  #chatPanelClose {
+    background: none; border: none; color: var(--dim);
+    font-size: 1.3rem; line-height: 1; cursor: pointer; transition: color 0.2s;
+  }
+  #chatPanelClose:hover { color: var(--accent); }
+
+  #chatNameGate { padding: 1.6rem 1.3rem; text-align: center; }
+  #chatNameGate p {
+    font-size: 0.82rem; color: var(--dim); line-height: 1.6; margin-bottom: 1.1rem;
+  }
+  #chatNameInput {
+    width: 100%;
+    background: var(--black);
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 0.7rem 0.9rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.85rem;
+    outline: none;
+    font-family: var(--font-body);
+    transition: border-color 0.2s;
+  }
+  #chatNameInput:focus { border-color: rgba(200,169,110,0.45); }
+  #chatNameInput::placeholder { color: var(--dimmer); }
+  #chatNameSubmit {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.7rem;
+    font-family: var(--font-title);
+    letter-spacing: 3px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  #chatNameSubmit:hover { background: var(--accent); color: var(--black); }
+
+  #chatMessages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.1rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .chat-empty { text-align: center; color: var(--dimmer); font-size: 0.78rem; margin-top: 1rem; }
+  .chat-msg { font-size: 0.83rem; line-height: 1.5; }
+  .chat-msg-name { font-family: var(--font-title); font-size: 0.62rem; letter-spacing: 1.5px; color: var(--dim); margin-bottom: 0.2rem; }
+  .chat-msg-self .chat-msg-name { color: var(--accent); }
+  .chat-msg-text { color: var(--white); overflow-wrap: anywhere; }
+
+  #chatForm {
+    display: none;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  #chatInput {
+    flex: 1;
+    background: var(--black);
+    border: none;
+    color: var(--white);
+    padding: 0.85rem 1rem;
+    font-size: 0.85rem;
+    outline: none;
+    font-family: var(--font-body);
+    min-width: 0;
+  }
+  #chatInput::placeholder { color: var(--dimmer); }
+  #chatSendBtn {
+    background: var(--accent);
+    border: none;
+    color: var(--black);
+    width: 50px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  #chatSendBtn:hover { background: #d8bb84; }
+
+  @media (max-width: 480px) {
+    #chatWidget { bottom: 1.1rem; right: 1.1rem; }
+    #chatPanel {
+      width: calc(100vw - 1.6rem);
+      height: 68vh;
+      bottom: 68px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -881,6 +1033,37 @@
   <a href="admin.html" class="footer-admin-link">ადმინი</a>
 </footer>
 
+<!-- LIVE CHAT WIDGET -->
+<div id="chatWidget">
+  <button id="chatToggleBtn" aria-label="chat">
+    <span id="chatIconOpen">✦</span>
+    <span id="chatIconClose" style="display:none;">&times;</span>
+  </button>
+
+  <div id="chatPanel">
+    <div id="chatHeader">
+      <span id="chatHeader-title">კლანის ჩატი</span>
+      <div id="chatHeaderRight">
+        <button id="chatChangeName">სახელის შეცვლა</button>
+        <button id="chatPanelClose" aria-label="close">&times;</button>
+      </div>
+    </div>
+
+    <div id="chatNameGate">
+      <p>დაწერე სახელი ან მეტსახელი, რომ ჩატში დაწერო</p>
+      <input type="text" id="chatNameInput" placeholder="შენი სახელი" maxlength="24">
+      <button id="chatNameSubmit">✦ &nbsp; ჩატში შესვლა &nbsp; ✦</button>
+    </div>
+
+    <div id="chatMessages"></div>
+
+    <form id="chatForm">
+      <input type="text" id="chatInput" placeholder="დაწერე რამე..." maxlength="300" autocomplete="off">
+      <button type="submit" id="chatSendBtn">➤</button>
+    </form>
+  </div>
+</div>
+
 <script>
   // ── Hamburger menu ──
   const hamburger = document.getElementById('hamburger');
@@ -949,6 +1132,136 @@
   const heroImg = document.getElementById('heroImg');
   const randomUrl = heroPhotos[Math.floor(Math.random() * heroPhotos.length)];
   heroImg.src = randomUrl + "?v=" + Date.now();
+</script>
+
+<!-- LIVE CHAT FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdp-eW4fnlTUBG7J36pIFz2iTpV_dyRMs",
+    authDomain: "giasklani.firebaseapp.com",
+    projectId: "giasklani",
+    storageBucket: "giasklani.firebasestorage.app",
+    messagingSenderId: "664819824670",
+    appId: "1:664819824670:web:be0b1b0dd645c3d936960f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const STORAGE_KEY = 'giasClanChatName';
+  let myName = localStorage.getItem(STORAGE_KEY) || '';
+
+  const toggleBtn = document.getElementById('chatToggleBtn');
+  const panel = document.getElementById('chatPanel');
+  const closeBtn = document.getElementById('chatPanelClose');
+  const changeNameBtn = document.getElementById('chatChangeName');
+  const nameGate = document.getElementById('chatNameGate');
+  const nameInput = document.getElementById('chatNameInput');
+  const nameSubmit = document.getElementById('chatNameSubmit');
+  const messagesWrap = document.getElementById('chatMessages');
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+  const iconOpen = document.getElementById('chatIconOpen');
+  const iconClose = document.getElementById('chatIconClose');
+
+  let unsubscribe = null;
+  let lastSendTime = 0;
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, m => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[m]));
+  }
+
+  function openPanel() {
+    panel.classList.add('open');
+    iconOpen.style.display = 'none';
+    iconClose.style.display = 'inline';
+    if (myName) showChat(); else nameGate.style.display = 'block';
+  }
+  function closePanel() {
+    panel.classList.remove('open');
+    iconOpen.style.display = 'inline';
+    iconClose.style.display = 'none';
+  }
+  toggleBtn.addEventListener('click', () => {
+    panel.classList.contains('open') ? closePanel() : openPanel();
+  });
+  closeBtn.addEventListener('click', closePanel);
+
+  function showChat() {
+    nameGate.style.display = 'none';
+    messagesWrap.style.display = 'flex';
+    chatForm.style.display = 'flex';
+    changeNameBtn.style.display = 'inline-block';
+    startListening();
+  }
+
+  function showNameGate() {
+    nameGate.style.display = 'block';
+    messagesWrap.style.display = 'none';
+    chatForm.style.display = 'none';
+    changeNameBtn.style.display = 'none';
+  }
+
+  nameSubmit.addEventListener('click', submitName);
+  nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
+  function submitName() {
+    const v = nameInput.value.trim();
+    if (!v) return;
+    myName = v.slice(0, 24);
+    localStorage.setItem(STORAGE_KEY, myName);
+    showChat();
+  }
+  if (myName) nameInput.value = myName;
+
+  changeNameBtn.addEventListener('click', () => {
+    nameInput.value = myName;
+    showNameGate();
+  });
+
+  function startListening() {
+    if (unsubscribe) return;
+    const q = query(collection(db, 'chatMessages'), orderBy('createdAt', 'desc'), limit(100));
+    unsubscribe = onSnapshot(q, snap => {
+      const msgs = snap.docs.map(d => d.data()).reverse();
+      if (msgs.length === 0) {
+        messagesWrap.innerHTML = '<p class="chat-empty">ჯერ არავის დაუწერია — იყავი პირველი ✦</p>';
+      } else {
+        messagesWrap.innerHTML = msgs.map(m => `
+          <div class="chat-msg ${m.name === myName ? 'chat-msg-self' : ''}">
+            <div class="chat-msg-name">${escapeHtml(m.name || 'უცნობი')}</div>
+            <div class="chat-msg-text">${escapeHtml(m.text || '')}</div>
+          </div>
+        `).join('');
+      }
+      messagesWrap.scrollTop = messagesWrap.scrollHeight;
+    });
+  }
+
+  chatForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const text = chatInput.value.trim();
+    if (!text || !myName) return;
+    const now = Date.now();
+    if (now - lastSendTime < 1200) return;
+    lastSendTime = now;
+    chatInput.value = '';
+    try {
+      await addDoc(collection(db, 'chatMessages'), {
+        name: myName,
+        text: text.slice(0, 300),
+        createdAt: serverTimestamp()
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  });
 </script>
 
 </body>
