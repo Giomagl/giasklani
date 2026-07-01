@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>GIA'S CLAN</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Inter:wght@300;400;600&family=Black+Ops+One&family=Russo+One&display=swap" rel="stylesheet">
 <style>
@@ -879,12 +879,38 @@
   #chatSendBtn:hover { background: #d8bb84; }
 
   @media (max-width: 480px) {
-    #chatWidget { bottom: 1.1rem; right: 1.1rem; }
+    #chatWidget {
+      bottom: max(1.1rem, env(safe-area-inset-bottom));
+      right: 1.1rem;
+    }
+    #chatToggleBtn { width: 52px; height: 52px; font-size: 1.35rem; }
     #chatPanel {
       width: calc(100vw - 1.6rem);
-      height: 68vh;
-      bottom: 68px;
+      height: 72vh;
+      max-height: 72vh;
+      bottom: 64px;
     }
+    #chatHeader { padding: 0.8rem 1rem; }
+    #chatHeader-title { font-size: 0.68rem; letter-spacing: 2px; }
+    #chatChangeName { font-size: 0.55rem; }
+    #chatNameGate { padding: 1.3rem 1.1rem; }
+    #chatNameGate p { font-size: 0.78rem; }
+    #chatMessages { padding: 0.85rem 0.9rem; }
+    .chat-msg { font-size: 0.82rem; }
+    /* 16px min font-size prevents iOS Safari auto-zoom on focus */
+    #chatNameInput, #chatInput { font-size: 16px; }
+    #chatInput { padding: 0.8rem 0.9rem; }
+    #chatSendBtn { width: 46px; font-size: 1rem; }
+  }
+
+  @media (max-width: 360px) {
+    #chatPanel { width: calc(100vw - 1.2rem); height: 75vh; max-height: 75vh; }
+    #chatWidget { right: 0.9rem; }
+    #chatToggleBtn { width: 48px; height: 48px; font-size: 1.2rem; }
+  }
+
+  @media (max-height: 560px) and (max-width: 900px) {
+    #chatPanel { height: 82vh; max-height: 82vh; }
   }
 </style>
 </head>
